@@ -31,12 +31,26 @@ internal class SlidePuzzleController
         if (_view.PanelViews is null) throw new Exception("PanelViews is null");
         foreach (var panelView in _view.PanelViews)
         {
-            panelView.SetTappedNotifier(Tapped);
+            panelView.SetTappedNotifier(PanelTapped);
         }
 
+        // Make slide puzzle view to show "START" text
+        var tapRecognizer = new TapGestureRecognizer();
+        tapRecognizer.Tapped += (s,e) =>
+        {
+            ViewTapped();
+        };
+        _view.StartImage.GestureRecognizers.Add(tapRecognizer);
+
+        _view.ShowStartImage();
+        
+    }
+
+    async Task ShuffleAsync(int counts = 10)
+    {
         //var list = _model.Shuffle();
 
-        foreach (var panel in _model.Shuffle(100))
+        foreach (var panel in _model.Shuffle(counts))
         {
             var id = panel.ID;
 
@@ -47,10 +61,23 @@ internal class SlidePuzzleController
 
             await SwapPanelTranslationAsync(imagePanelView, blankPanelView, dt);
         }
+
+        // If shuffling is failed to make random puzzle, try it again
+        if (_model.IsCompleted()) await ShuffleAsync(counts); 
     }
 
-    async void Tapped(SlidePanelView panelView)
+    async void ViewTapped()
     {
+        _view.HideStartImage();
+        _view.HideCompletedImage();
+
+        await ShuffleAsync();
+    }
+
+    async void PanelTapped(SlidePanelView panelView)
+    {
+        if (panelView.IsMoving) return;
+
         int id = panelView.ID;
 
         SlidePanel panel = _model.Panels[id];
@@ -66,14 +93,21 @@ internal class SlidePuzzleController
 
             await SwapPanelTranslationAsync(imagePanelView, blankPanelView, dt);
         }
-        else
-        {
-            View view = panelView as View;
+        else await panelView.Shake(20, 200);
+        // {
+        //     View view = panelView as View;
 
-            uint dt = 100;
-            await view.RotateTo(20, dt);
-            await view.RotateTo(-20, dt);
-            await view.RotateTo(0, dt);
+        //     uint dt = 100;
+        //     await view.RotateTo(20, dt);
+        //     await view.RotateTo(-20, dt);
+        //     await view.RotateTo(0, dt);
+        // }
+
+        if (_model.IsCompleted()) 
+        {
+            // Show "CLEAR" message
+            _view.ShowCompletedImage();
+            _view.ShowStartImage();
         }
     }
 

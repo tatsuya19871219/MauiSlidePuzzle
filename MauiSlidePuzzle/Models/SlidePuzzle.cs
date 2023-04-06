@@ -78,5 +78,8 @@ internal class SlidePuzzle
         return _panels.Where( p => p.Location.Distance(panel.Location) == 1 ).ToList();
     }
 
-
+    internal bool IsCompleted()
+    {
+        return _panels.All(p => p.IsInitialLocation());
+    }
 }

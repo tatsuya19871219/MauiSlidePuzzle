@@ -22,11 +22,13 @@ internal class BlankPanelView : SlidePanelView
 
     async internal override Task MoveTo(Point point, uint length)
     {
+        _isMoving = true;
         this.IsVisible = false;
 
         await this.TranslateTo(point.X, point.Y, 0);
 
         this.IsVisible = true;
+        _isMoving = false;
     }
 
 }

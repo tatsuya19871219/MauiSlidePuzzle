@@ -18,6 +18,10 @@ abstract internal partial class SlidePanelView : ContentView
         }
     }
     //Point _translation;
+
+    internal bool IsMoving => _isMoving;
+    protected bool _isMoving = false;
+
     readonly GraphicsView _gv;
     //readonly protected PanelDrawable Drawable;
 
@@ -66,4 +70,16 @@ abstract internal partial class SlidePanelView : ContentView
     abstract public void SetTappedNotifier(Action<SlidePanelView> tapped);
 
     abstract internal Task MoveTo(Point point, uint length);
+
+    async internal Task Shake(double amplitude, uint length)
+    {
+        _isMoving = true;
+
+        uint len = length/4;
+        await this.RelRotateTo(amplitude, len);
+        await this.RelRotateTo(-2*amplitude, 2*len);
+        await this.RelRotateTo(amplitude, len);
+
+        _isMoving = false;
+    }
 }

@@ -26,7 +26,9 @@ internal class ImagePanelView : SlidePanelView
   
 	async internal override Task MoveTo(Point point, uint length)
     {
+		_isMoving = true;
 		await this.TranslateTo(point.X, point.Y, length);
+		_isMoving = false;
     }
 
 }

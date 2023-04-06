@@ -33,4 +33,6 @@ internal class SlidePanel
         (targetPanel.Location, this.Location) = (this.Location, targetPanel.Location);
     }
 
+    internal bool IsInitialLocation() => Location.Equals(_initialLocation);
+
 }
