@@ -1,0 +1,125 @@
+@startuml MauiSlidePuzzle
+
+class SlidePuzzleView
+{
+    - puzzle : SlidePuzzle
+    - image : IImage
+    '- indexToPositionDict : Dictionary<Point, Point>
+    ~ PanelViews : List<IPanelView> <<read only>>
+    ~ SlidePuzzleView()
+    ~ Initialize(model : SlidePuzzle) : void
+    '~ ShuffleAsync(count : int) : Task
+}
+
+' interface IPanelView
+' {
+'     ID : int
+'     SetTappedNotifier(tapped : Action<IPanelView>) : void
+' }
+
+abstract SlidePanelView
+{
+    + ID : int
+    + Translation : Point
+    - gv : GraphicsView <<read only>>
+    # SlidePanelView(image : IImage, clipRect : RectF, id : int)
+    # AddTapRecognizer(tapped : Action<SlidePanelView>) : void
+    {abstract} ~ DrawPanelFrame(canvas : ICanvas, clipRect : RectF) : void
+    {abstract} ~ SetTappedNotifier(tapped : Action<SlidePanelView>) : void
+}
+
+class ImagePanelView
+{
+    ' - panel : ImagePanel
+    ' - isBlank : bool
+    ' ~ ImagePanelView(panel : ImagePanel)
+    ' ~ SetAsBlank() : void
+}
+
+class BlankPanelView
+{
+
+}
+
+class PanelDrawable
+{
+    - image : IImage <<read only>>
+    - clipRect : RectF <<read only>>
+    + DrawPanelFrame : Action<ICanvas, RectF>
+}
+
+class SlidePuzzle
+{
+    + Rows : int <<read only>>
+    + Columns : int <<read only>>
+    + Panels : List<SlidePanel> <<read only>>
+    + BlankPanel : SlidePanel <<read only>>
+    ' - panels : List<ImagePanel>
+    ' - blankPanel : ImagePanel
+    ~ SlidePuzzle(rows : int, columns : int)
+    ~ TryMode(panel : SlidePanel) : bool
+}
+
+' interface IPanel
+' {
+'     ID : int
+'     Location : Point
+' }
+
+class SlidePanel
+{
+    - initialLocation : Point <<read only>>
+    + ID : int
+    + Location : Point
+    ~ SlidePanel(initialLocation : Point, id : int)
+}
+
+' class ImagePanel
+' {
+'     '- Neighbours : List<ImagePanel>
+'     '- SwapNeighbours(panel : ImagePanel) : void
+' }
+
+' class BlankPanel
+' {
+
+' }
+
+class SlidePuzzleController
+{
+    - view : SlidePuzzleView <<read only>>
+    - model : SlidePuzzle <<read only>>
+    - Initialize()
+    - Tapped(panelView : SlidePanelView) : void
+}
+
+class MainPage
+{
+    - controller : SlidePuzzleController <<read only>>
+    + MainPage()
+    '- InitializePuzzle() : void
+}
+
+' arrows
+' AbstractPanel .up.|> IPanel
+' AbstractPanelView .up.|> IPanelView
+
+' ImagePanel -up-|> AbstractPanel
+' BlankPanel -up-|> AbstractPanel
+
+ImagePanelView -up-|> SlidePanelView
+BlankPanelView -up-|> SlidePanelView
+
+SlidePanelView -right-> PanelDrawable
+
+MainPage --> SlidePuzzleView
+MainPage ..> SlidePuzzle : <create> 
+MainPage --> SlidePuzzleController
+
+SlidePuzzle *.down. "many" SlidePanel
+SlidePuzzleView *.down. "many" SlidePanelView
+
+SlidePuzzleController -left-> SlidePuzzleView
+SlidePuzzleController -right-> SlidePuzzle
+
+@enduml

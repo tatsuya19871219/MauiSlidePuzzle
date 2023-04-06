@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiSlidePuzzle.MainPage"
+             xmlns:custom="clr-namespace:MauiSlidePuzzle.CustomViews">
+
+    <Grid HeightRequest="300" WidthRequest="300">
+        <Border StrokeThickness="10"
+                Stroke="Aqua">
+            <custom:SlidePuzzleView x:Name="MyPuzzleView" Source="myshapes.png"/>
+        </Border>
+    </Grid>
+        
+</ContentPage>
