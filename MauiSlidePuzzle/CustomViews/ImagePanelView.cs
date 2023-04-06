@@ -24,4 +24,9 @@ internal class ImagePanelView : SlidePanelView
 		AddTapRecognizer(tapped);
 	}
   
+	async internal override Task MoveTo(Point point, uint length)
+    {
+		await this.TranslateTo(point.X, point.Y, length);
+    }
+
 }

@@ -20,4 +20,13 @@ internal class BlankPanelView : SlidePanelView
         // just ignore the tap
     }
 
+    async internal override Task MoveTo(Point point, uint length)
+    {
+        this.IsVisible = false;
+
+        await this.TranslateTo(point.X, point.Y, 0);
+
+        this.IsVisible = true;
+    }
+
 }

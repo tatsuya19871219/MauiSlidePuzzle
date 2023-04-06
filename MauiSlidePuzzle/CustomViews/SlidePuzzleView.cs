@@ -23,12 +23,15 @@ public class SlidePuzzleView : ContentView
 	}
 
 	internal List<SlidePanelView> PanelViews => _panelViews;
+	internal BlankPanelView BlankPanelView {get; private set;}
 
 	Microsoft.Maui.Graphics.IImage _image;
 	//readonly List<ImagePanel> _panels;
 
 	readonly Grid _grid;
 	readonly List<SlidePanelView> _panelViews = new();
+
+	//readonly SlidePanelView _blankPanelView;
 
 	//Dictionary<Point, Point> _indexToPositionDict = new();
 
@@ -64,7 +67,8 @@ public class SlidePuzzleView : ContentView
 			SlidePanelView panelView;
 
 			if (panel == model.BlankPanel)
-				panelView = new BlankPanelView(_image, clipRect, id);
+				panelView = BlankPanelView 
+							= new BlankPanelView(_image, clipRect, id);
 			else
 				panelView = new ImagePanelView(_image, clipRect, id);
 

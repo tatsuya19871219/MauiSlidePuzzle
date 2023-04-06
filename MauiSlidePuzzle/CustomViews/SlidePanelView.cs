@@ -64,4 +64,6 @@ abstract internal partial class SlidePanelView : ContentView
 
     abstract internal void DrawPanelFrame(ICanvas canvas, RectF clipRect);
     abstract public void SetTappedNotifier(Action<SlidePanelView> tapped);
+
+    abstract internal Task MoveTo(Point point, uint length);
 }

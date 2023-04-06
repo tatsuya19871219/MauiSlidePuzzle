@@ -31,31 +31,38 @@ internal class SlidePuzzle
         // Prepare panels for each location
         for (int k = 0; k < _initialLocations.Count; k++)
             _panels.Add( new SlidePanel(_initialLocations[k], k));
-        // {
-        //     if (k == _initialLocations.Count-1)
-        //         _panels.Add( _blank = new BlankPanel(_initialLocations[k], k) );
-        //      else
-        //         _panels.Add( new ImagePanel(_initialLocations[k], k) );
-        // }
-
+        
+        // Set the last panel as the blank
         _blank = _panels.Last();
+    }
 
-        // // Assign geometric relation (i.e., neighbors) for each panel
-        // foreach (var panel in _panels)
-        // {
-        //     // var neighbors = _panels.Where( p => p.Location.Distance(panel.Location) == 1).ToList();
-        //     // panel.Neighbors = neighbors;
+    internal IEnumerable<SlidePanel> Shuffle(int counts = 10)
+    {
+        int i = 0;
 
-        //     panel.Neighbors = GetNeighbors(panel);
-        // }
+        while (i < counts)
+        {
+            var neighbors = GetNeighbors(_blank);
 
+            var k = Random.Shared.Next(neighbors.Count);
+            var panel = neighbors[k];
+
+            if (TryMove(panel))
+            {
+                //panel.SwapLocation(_blank); // swap twice...
+                i++;
+                yield return panel;
+            }
+            else continue;
+        }
     }
 
     internal bool TryMove(SlidePanel panel)
     {
+        if (panel == _blank) throw new Exception("Blank panel can not move.");
+
         if (GetNeighbors(_blank).Contains(panel))
         {
-            //panel.SwapNeighbors(_blank);
             panel.SwapLocation(_blank);
 
             return true;

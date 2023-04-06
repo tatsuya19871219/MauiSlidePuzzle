@@ -21,7 +21,7 @@ internal class SlidePuzzleController
         Initialize();
     }
 
-    void Initialize()
+    async void Initialize()
     {
         // Initialize view
         _view.Initialize(_model);
@@ -33,6 +33,20 @@ internal class SlidePuzzleController
         {
             panelView.SetTappedNotifier(Tapped);
         }
+
+        //var list = _model.Shuffle();
+
+        foreach (var panel in _model.Shuffle(100))
+        {
+            var id = panel.ID;
+
+            ImagePanelView imagePanelView = _view.PanelViews[id] as ImagePanelView;
+            BlankPanelView blankPanelView = _view.BlankPanelView;
+
+            uint dt = 100;
+
+            await SwapPanelTranslationAsync(imagePanelView, blankPanelView, dt);
+        }
     }
 
     async void Tapped(SlidePanelView panelView)
@@ -43,30 +57,14 @@ internal class SlidePuzzleController
 
         if ( _model.TryMove(panel) )
         {
-            int idBlank = _model.BlankPanel.ID;
+            //int idBlank = _model.BlankPanel.ID;
 
-            SlidePanelView blankPanelView = _view.PanelViews[idBlank];
+            ImagePanelView imagePanelView = panelView as ImagePanelView;
+            BlankPanelView blankPanelView = _view.BlankPanelView;
 
             uint dt = 200;
 
-            Point trans0 = panelView.Translation;
-            Point trans1 = blankPanelView.Translation;
-
-            View view = panelView as View;
-            View viewBlank = blankPanelView as View;
-
-            viewBlank.ZIndex = view.ZIndex - 1;
-            viewBlank.TranslationX = trans0.X;
-            viewBlank.TranslationY = trans0.Y;
-
-            viewBlank.IsVisible = false;
-
-            await view.TranslateTo(trans1.X, trans1.Y, dt);
-
-            viewBlank.IsVisible = true;
-
-            panelView.Translation = trans1;
-            blankPanelView.Translation = trans0;
+            await SwapPanelTranslationAsync(imagePanelView, blankPanelView, dt);
         }
         else
         {
@@ -77,5 +75,16 @@ internal class SlidePuzzleController
             await view.RotateTo(-20, dt);
             await view.RotateTo(0, dt);
         }
+    }
+
+    async Task SwapPanelTranslationAsync(ImagePanelView imagePanelView, BlankPanelView blankPanelView, uint length)
+    {
+        Point trans0 = imagePanelView.Translation;
+        Point trans1 = blankPanelView.Translation;
+
+        blankPanelView.ZIndex = imagePanelView.ZIndex - 1;
+
+        _ = blankPanelView.MoveTo(trans0, length);
+        await imagePanelView.MoveTo(trans1, length);
     }
 }

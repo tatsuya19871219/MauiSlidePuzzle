@@ -4,18 +4,11 @@ class SlidePuzzleView
 {
     - puzzle : SlidePuzzle
     - image : IImage
-    '- indexToPositionDict : Dictionary<Point, Point>
     ~ PanelViews : List<IPanelView> <<read only>>
     ~ SlidePuzzleView()
     ~ Initialize(model : SlidePuzzle) : void
     '~ ShuffleAsync(count : int) : Task
 }
-
-' interface IPanelView
-' {
-'     ID : int
-'     SetTappedNotifier(tapped : Action<IPanelView>) : void
-' }
 
 abstract SlidePanelView
 {
@@ -57,14 +50,9 @@ class SlidePuzzle
     ' - panels : List<ImagePanel>
     ' - blankPanel : ImagePanel
     ~ SlidePuzzle(rows : int, columns : int)
-    ~ TryMode(panel : SlidePanel) : bool
+    ~ TryMove(panel : SlidePanel) : bool
+    ~ Shuffle(counts : int) : IEnumerable<SlidePanel>
 }
-
-' interface IPanel
-' {
-'     ID : int
-'     Location : Point
-' }
 
 class SlidePanel
 {
@@ -74,23 +62,14 @@ class SlidePanel
     ~ SlidePanel(initialLocation : Point, id : int)
 }
 
-' class ImagePanel
-' {
-'     '- Neighbours : List<ImagePanel>
-'     '- SwapNeighbours(panel : ImagePanel) : void
-' }
-
-' class BlankPanel
-' {
-
-' }
-
 class SlidePuzzleController
 {
     - view : SlidePuzzleView <<read only>>
     - model : SlidePuzzle <<read only>>
     - Initialize()
-    - Tapped(panelView : SlidePanelView) : void
+    - ShuffleAsync(counts : int) : void
+    - PanelTapped(panelView : SlidePanelView) : void
+    - ViewTapped() : void
 }
 
 class MainPage
@@ -101,12 +80,6 @@ class MainPage
 }
 
 ' arrows
-' AbstractPanel .up.|> IPanel
-' AbstractPanelView .up.|> IPanelView
-
-' ImagePanel -up-|> AbstractPanel
-' BlankPanel -up-|> AbstractPanel
-
 ImagePanelView -up-|> SlidePanelView
 BlankPanelView -up-|> SlidePanelView
 
