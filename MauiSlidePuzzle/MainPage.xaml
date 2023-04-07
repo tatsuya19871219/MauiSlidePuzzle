@@ -4,11 +4,28 @@
              x:Class="MauiSlidePuzzle.MainPage"
              xmlns:custom="clr-namespace:MauiSlidePuzzle.CustomViews">
 
-    <Grid HeightRequest="300" WidthRequest="300">
-        <Border StrokeThickness="10"
-                Stroke="Aqua">
-            <custom:SlidePuzzleView x:Name="MyPuzzleView" Source="myshapes.png"/>
-        </Border>
-    </Grid>
-        
+    <VerticalStackLayout VerticalOptions="Center">
+
+        <Image x:Name="CompletedMessage"
+                Source="completed.png"
+               HorizontalOptions="Center"
+               HeightRequest="50"
+               IsVisible="false"/>
+
+        <Grid HeightRequest="300" WidthRequest="300" x:Name="A">
+            <Border StrokeThickness="10"
+                    Stroke="Brown">
+                <custom:SlidePuzzleView x:Name="MyPuzzleView" Source="myshapes.png"
+                                        IsEnabled="False"/>
+            </Border>
+        </Grid>
+
+        <ImageButton x:Name="StartButton" 
+                     Source="start.png" 
+                     HorizontalOptions="Center"
+                     HeightRequest="50"
+                     IsVisible="false"/>
+
+    </VerticalStackLayout>
+    
 </ContentPage>

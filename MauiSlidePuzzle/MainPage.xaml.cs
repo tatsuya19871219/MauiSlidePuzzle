@@ -5,28 +5,38 @@ namespace MauiSlidePuzzle;
 
 public partial class MainPage : ContentPage
 {
-
 	readonly SlidePuzzleController _controller;
 	
 	public MainPage()
 	{
 		InitializeComponent();
 
-		//InitializePuzzle();
-
 		var puzzle = new SlidePuzzle(3, 3);
 
 		_controller = new SlidePuzzleController(MyPuzzleView, puzzle);
+
+		_controller.Ready += () =>
+		{
+			//A.IsEnabled = false;
+			StartButton.IsVisible = true;
+		};
+
+		_controller.Completed += () =>
+		{
+			CompletedMessage.IsVisible = true;
+			_controller.Ready?.Invoke();
+		};
+
+		_controller.Initialize();
+
+		StartButton.Clicked += async (s, e) =>
+		{
+			CompletedMessage.IsVisible = false;
+			StartButton.IsVisible = false;
+			await _controller.ShuffleAsync();
+			//MyPuzzleView.IsEnabled = true;
+		};
+
 	}
 
-	// async void InitializePuzzle()
-	// {
-	// 	var puzzle = new SlidePuzzle(3, 3);
-
-	// 	//await MyPuzzle.InitializeAsync(3, 3);
-
-	// 	//MyPuzzle.ShuffleAsyns();
-	// }
-
 }
-

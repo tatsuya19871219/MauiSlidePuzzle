@@ -15,10 +15,10 @@ internal class BlankPanelView : SlidePanelView
 		canvas.FillRectangle(clipRect);
     }
 
-    public override void SetTappedNotifier(Action<SlidePanelView> tapped)
-    {
-        // just ignore the tap
-    }
+    //public override void SetTappedNotifier(Action<SlidePanelView> tapped)
+    //{
+    //    // just ignore the tap
+    //}
 
     async internal override Task MoveTo(Point point, uint length)
     {

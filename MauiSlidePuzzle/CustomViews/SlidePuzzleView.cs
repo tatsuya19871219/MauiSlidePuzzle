@@ -22,10 +22,13 @@ public class SlidePuzzleView : ContentView
 		set => SetValue(SourceProperty, value);
 	}
 
+	// public bool IsReady = false;
+	// public bool IsCompleted = false;
+
 	internal List<SlidePanelView> PanelViews => _panelViews;
 	internal BlankPanelView BlankPanelView {get; private set;}
 
-	internal Image StartImage => _startImage;
+	//internal Image StartImage => _startImage;
 	// internal Image CompletedImage => _completedImage;
 
 	Microsoft.Maui.Graphics.IImage _image;
@@ -34,8 +37,8 @@ public class SlidePuzzleView : ContentView
 	readonly Grid _grid;
 	readonly List<SlidePanelView> _panelViews = new();
 
-	readonly Image _startImage;
-	readonly Image _completedImage;
+	//readonly Image _startImage;
+	//readonly Image _completedImage;
 
 	//readonly SlidePanelView _blankPanelView;
 
@@ -47,8 +50,8 @@ public class SlidePuzzleView : ContentView
 
 		_grid.BackgroundColor = Colors.WhiteSmoke;
 
-		_startImage = new Image() {Source = "start.png", IsVisible = false};
-		_completedImage = new Image() {Source = "completed.png", IsVisible = false};
+		//_startImage = new Image() {Source = "start.png", IsVisible = false};
+		//_completedImage = new Image() {Source = "completed.png", IsVisible = false};
 	}
 
 	internal void Initialize(SlidePuzzle model)
@@ -92,24 +95,26 @@ public class SlidePuzzleView : ContentView
 			_panelViews.Add( panelView );
 		}
 
-		_startImage.WidthRequest = width;
-		_startImage.HeightRequest = height;
-		_completedImage.WidthRequest = width;
-		_completedImage.HeightRequest = height;
+		// _startImage.WidthRequest = width;
+		// _startImage.HeightRequest = height;
+		// _completedImage.WidthRequest = width;
+		// _completedImage.HeightRequest = height;
 
-		_startImage.HorizontalOptions = LayoutOptions.Start;
-		_startImage.VerticalOptions = LayoutOptions.Start;
-		_completedImage.HorizontalOptions = LayoutOptions.Start;
-		_completedImage.VerticalOptions = LayoutOptions.Start;
+		// _startImage.HorizontalOptions = LayoutOptions.Start;
+		// _startImage.VerticalOptions = LayoutOptions.Start;
+		// _completedImage.HorizontalOptions = LayoutOptions.Start;
+		// _completedImage.VerticalOptions = LayoutOptions.Start;
 
-		_grid.Add(_startImage);
-		_grid.Add(_completedImage);
+		// _grid.Add(_startImage);
+		// _grid.Add(_completedImage);
+
+		//IsReady = true;
 	}
 
-	internal void ShowStartImage() => _startImage.IsVisible = true;
-	internal void HideStartImage() => _startImage.IsVisible = false;
-	internal void ShowCompletedImage() => _completedImage.IsVisible = true;
-	internal void HideCompletedImage() => _completedImage.IsVisible = false;
+	// internal void ShowStartImage() => _startImage.IsVisible = true;
+	// internal void HideStartImage() => _startImage.IsVisible = false;
+	// internal void ShowCompletedImage() => _completedImage.IsVisible = true;
+	// internal void HideCompletedImage() => _completedImage.IsVisible = false;
 
     protected override void OnSizeAllocated(double width, double height)
     {

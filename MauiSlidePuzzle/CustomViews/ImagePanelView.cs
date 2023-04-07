@@ -19,10 +19,10 @@ internal class ImagePanelView : SlidePanelView
 		canvas.DrawRectangle(clipRect);
 	}
 
-	public override void SetTappedNotifier(Action<SlidePanelView> tapped)
-	{
-		AddTapRecognizer(tapped);
-	}
+	//public override void SetTappedNotifier(Action<SlidePanelView> tapped)
+	//{
+	//	AddTapRecognizer(tapped);
+	//}
   
 	async internal override Task MoveTo(Point point, uint length)
     {

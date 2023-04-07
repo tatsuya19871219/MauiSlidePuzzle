@@ -27,6 +27,8 @@ abstract internal partial class SlidePanelView : ContentView
 
     public int ID {get; init;}
 
+    internal Action<SlidePanelView> Tapped;
+
     protected SlidePanelView(Microsoft.Maui.Graphics.IImage image, RectF clipRect, int id)
     {
         _gv = new GraphicsView();
@@ -53,21 +55,26 @@ abstract internal partial class SlidePanelView : ContentView
         // this.TranslationY = _translation.Y;
 
         drawable.DrawPanelFrame += DrawPanelFrame;
-    }
 
-    protected void AddTapRecognizer(Action<SlidePanelView> tapped)
-    {
         TapGestureRecognizer tapRecognizer = new TapGestureRecognizer();
-        tapRecognizer.Tapped += (s, e) =>
-        {
-            tapped?.Invoke(this);
-        };
+        tapRecognizer.Tapped += (s, e) => Tapped?.Invoke(this);
 
         _gv.GestureRecognizers.Add(tapRecognizer);
     }
 
+    // protected void AddTapRecognizer(Action<SlidePanelView> tapped)
+    // {
+    //     TapGestureRecognizer tapRecognizer = new TapGestureRecognizer();
+    //     tapRecognizer.Tapped += (s, e) =>
+    //     {
+    //         tapped?.Invoke(this);
+    //     };
+
+    //     _gv.GestureRecognizers.Add(tapRecognizer);
+    // }
+
     abstract internal void DrawPanelFrame(ICanvas canvas, RectF clipRect);
-    abstract public void SetTappedNotifier(Action<SlidePanelView> tapped);
+    //abstract public void SetTappedNotifier(Action<SlidePanelView> tapped);
 
     abstract internal Task MoveTo(Point point, uint length);
 
