@@ -9,10 +9,10 @@
         <Image x:Name="CompletedMessage"
                 Source="completed.png"
                HorizontalOptions="Center"
-               HeightRequest="50"
+               HeightRequest="80"
                IsVisible="false"/>
 
-        <Grid HeightRequest="300" WidthRequest="300" x:Name="A">
+        <Grid HeightRequest="300" WidthRequest="300">
             <Border StrokeThickness="10"
                     Stroke="Brown">
                 <custom:SlidePuzzleView x:Name="MyPuzzleView" Source="myshapes.png"
@@ -23,7 +23,7 @@
         <ImageButton x:Name="StartButton" 
                      Source="start.png" 
                      HorizontalOptions="Center"
-                     HeightRequest="50"
+                     HeightRequest="80"
                      IsVisible="false"/>
 
     </VerticalStackLayout>

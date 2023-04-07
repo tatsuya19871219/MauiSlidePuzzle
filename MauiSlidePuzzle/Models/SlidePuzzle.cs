@@ -49,7 +49,6 @@ internal class SlidePuzzle
 
             if (TryMove(panel))
             {
-                //panel.SwapLocation(_blank); // swap twice...
                 i++;
                 yield return panel;
             }

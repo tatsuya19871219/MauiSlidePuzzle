@@ -1,31 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.ComponentModel;
-using MauiSlidePuzzle.CustomViews;
+﻿using MauiSlidePuzzle.CustomViews;
 using MauiSlidePuzzle.Models;
 
 namespace MauiSlidePuzzle.Controllers;
 
-internal class SlidePuzzleController //: ObservableObject
+internal class SlidePuzzleController
 {
-    // [ObservableProperty] bool _isReady = false;
-    // [ObservableProperty] bool _isCompleted = false;
-
     readonly SlidePuzzleView _view;
     readonly SlidePuzzle _model;
 
-    internal Action Ready;
-    internal Action Completed;
+    internal Action OnReady;
+    internal Action OnCompleted;
 
     internal SlidePuzzleController(SlidePuzzleView view, SlidePuzzle model)
     {
         _view = view;
         _model = model;
-
-        //Initialize();
     }
 
     internal void Initialize()
@@ -33,49 +22,25 @@ internal class SlidePuzzleController //: ObservableObject
         // Initialize view
         _view.Initialize(_model);
     
-        // Set callback events of the view
         if (_view.PanelViews is null) throw new Exception("PanelViews is null");
-        // foreach (var panelView in _view.PanelViews)
-        // {
-        //     panelView.SetTappedNotifier(PanelTapped);
-        // }
-
-        // Make slide puzzle view to show "START" text
-        // var tapRecognizer = new TapGestureRecognizer();
-        // tapRecognizer.Tapped += (s,e) =>
-        // {
-        //     ViewTapped();
-        // };
-        // _view.StartImage.GestureRecognizers.Add(tapRecognizer);
-
-        // _view.ShowStartImage();
-
-        //IsReady = true;
-        Ready?.Invoke();
+        
+        OnReady?.Invoke();
     }
 
     void EnablePanelTap()
     {
         foreach (var panelView in _view.PanelViews) 
-            panelView.Tapped += PanelTapped;
-        // {
-        //     panelView.SetTappedNotifier(PanelTapped);
-        // }
+            if (panelView != _view.BlankPanelView) panelView.Tapped += PanelTapped;
     }
 
     void DisablePanelTap()
     {
         foreach (var panelView in _view.PanelViews)
-            panelView.Tapped -= PanelTapped;
+            if (panelView != _view.BlankPanelView) panelView.Tapped -= PanelTapped;
     }
 
     async internal Task ShuffleAsync(int counts = 10)
     {
-        //IsReady = false;
-        //IsCompleted = false;
-
-        //var list = _model.Shuffle();
-
         foreach (var panel in _model.Shuffle(counts))
         {
             var id = panel.ID;
@@ -93,14 +58,6 @@ internal class SlidePuzzleController //: ObservableObject
         else EnablePanelTap();
     }
 
-    // async void ViewTapped()
-    // {
-    //     // _view.HideStartImage();
-    //     // _view.HideCompletedImage();
-
-    //     await ShuffleAsync();
-    // }
-
     async void PanelTapped(SlidePanelView panelView)
     {
         if (panelView.IsMoving) return;
@@ -111,8 +68,6 @@ internal class SlidePuzzleController //: ObservableObject
 
         if ( _model.TryMove(panel) )
         {
-            //int idBlank = _model.BlankPanel.ID;
-
             ImagePanelView imagePanelView = panelView as ImagePanelView;
             BlankPanelView blankPanelView = _view.BlankPanelView;
 
@@ -121,29 +76,12 @@ internal class SlidePuzzleController //: ObservableObject
             await SwapPanelTranslationAsync(imagePanelView, blankPanelView, dt);
         }
         else await panelView.Shake(20, 200);
-        // {
-        //     View view = panelView as View;
-
-        //     uint dt = 100;
-        //     await view.RotateTo(20, dt);
-        //     await view.RotateTo(-20, dt);
-        //     await view.RotateTo(0, dt);
-        // }
 
         if (_model.IsCompleted()) 
         {
             DisablePanelTap();
-            Completed?.Invoke();
+            OnCompleted?.Invoke();
         }
-        // {
-        //     //IsCompleted = true;
-        //     //IsReady = true;
-        // }
-        // // {
-        //     // Show "CLEAR" message
-        //     // _view.ShowCompletedImage();
-        //     // _view.ShowStartImage();
-        // }
     }
 
     async Task SwapPanelTranslationAsync(ImagePanelView imagePanelView, BlankPanelView blankPanelView, uint length)

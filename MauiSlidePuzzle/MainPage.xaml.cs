@@ -15,16 +15,17 @@ public partial class MainPage : ContentPage
 
 		_controller = new SlidePuzzleController(MyPuzzleView, puzzle);
 
-		_controller.Ready += () =>
+		_controller.OnReady += () =>
 		{
-			//A.IsEnabled = false;
 			StartButton.IsVisible = true;
 		};
 
-		_controller.Completed += () =>
+		_controller.OnCompleted += () =>
 		{
 			CompletedMessage.IsVisible = true;
-			_controller.Ready?.Invoke();
+
+			// Retart 
+			_controller.OnReady?.Invoke();
 		};
 
 		_controller.Initialize();
@@ -34,7 +35,6 @@ public partial class MainPage : ContentPage
 			CompletedMessage.IsVisible = false;
 			StartButton.IsVisible = false;
 			await _controller.ShuffleAsync();
-			//MyPuzzleView.IsEnabled = true;
 		};
 
 	}

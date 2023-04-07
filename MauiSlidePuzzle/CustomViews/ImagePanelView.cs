@@ -1,6 +1,3 @@
-using Microsoft.Maui.Controls.Shapes;
-using Microsoft.Maui.Graphics;
-
 namespace MauiSlidePuzzle.CustomViews;
 
 internal class ImagePanelView : SlidePanelView
@@ -19,11 +16,6 @@ internal class ImagePanelView : SlidePanelView
 		canvas.DrawRectangle(clipRect);
 	}
 
-	//public override void SetTappedNotifier(Action<SlidePanelView> tapped)
-	//{
-	//	AddTapRecognizer(tapped);
-	//}
-  
 	async internal override Task MoveTo(Point point, uint length)
     {
 		_isMoving = true;

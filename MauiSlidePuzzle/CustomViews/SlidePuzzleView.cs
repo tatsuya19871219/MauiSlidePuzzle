@@ -22,42 +22,24 @@ public class SlidePuzzleView : ContentView
 		set => SetValue(SourceProperty, value);
 	}
 
-	// public bool IsReady = false;
-	// public bool IsCompleted = false;
-
 	internal List<SlidePanelView> PanelViews => _panelViews;
 	internal BlankPanelView BlankPanelView {get; private set;}
 
-	//internal Image StartImage => _startImage;
-	// internal Image CompletedImage => _completedImage;
-
 	Microsoft.Maui.Graphics.IImage _image;
-	//readonly List<ImagePanel> _panels;
 
 	readonly Grid _grid;
 	readonly List<SlidePanelView> _panelViews = new();
-
-	//readonly Image _startImage;
-	//readonly Image _completedImage;
-
-	//readonly SlidePanelView _blankPanelView;
-
-	//Dictionary<Point, Point> _indexToPositionDict = new();
 
 	public SlidePuzzleView()
 	{
 		Content = _grid = new Grid();
 
 		_grid.BackgroundColor = Colors.WhiteSmoke;
-
-		//_startImage = new Image() {Source = "start.png", IsVisible = false};
-		//_completedImage = new Image() {Source = "completed.png", IsVisible = false};
 	}
 
 	internal void Initialize(SlidePuzzle model)
 	{
 		if (Source is null) throw new Exception("Source is not set yet.");
-		//if (rows <= 0 || columns <= 0) throw new ArgumentException("rows and columns should be positive numbers");
 		
 		_grid.Clear();
 
@@ -84,37 +66,12 @@ public class SlidePuzzleView : ContentView
 			else
 				panelView = new ImagePanelView(_image, clipRect, id);
 
-			// panelView.HorizontalOptions = LayoutOptions.Start;
-			// panelView.VerticalOptions = LayoutOptions.Start;
-
-			// panelView.TranslationX = clipRect.X;
-			// panelView.TranslationY = clipRect.Y;
-
 			_grid.Add( panelView as IView );
 
 			_panelViews.Add( panelView );
 		}
 
-		// _startImage.WidthRequest = width;
-		// _startImage.HeightRequest = height;
-		// _completedImage.WidthRequest = width;
-		// _completedImage.HeightRequest = height;
-
-		// _startImage.HorizontalOptions = LayoutOptions.Start;
-		// _startImage.VerticalOptions = LayoutOptions.Start;
-		// _completedImage.HorizontalOptions = LayoutOptions.Start;
-		// _completedImage.VerticalOptions = LayoutOptions.Start;
-
-		// _grid.Add(_startImage);
-		// _grid.Add(_completedImage);
-
-		//IsReady = true;
 	}
-
-	// internal void ShowStartImage() => _startImage.IsVisible = true;
-	// internal void HideStartImage() => _startImage.IsVisible = false;
-	// internal void ShowCompletedImage() => _completedImage.IsVisible = true;
-	// internal void HideCompletedImage() => _completedImage.IsVisible = false;
 
     protected override void OnSizeAllocated(double width, double height)
     {
@@ -142,12 +99,7 @@ public class SlidePuzzleView : ContentView
 
 				SetImageFromFileImageSource(Source);
 
-				break;
-
-			//default:
-
-			//	throw new Exception("Unknown property name is given");
-			
+				break;			
         }
 	}
 

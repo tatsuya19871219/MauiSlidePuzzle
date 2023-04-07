@@ -12,18 +12,13 @@ abstract internal partial class SlidePanelView : ContentView
     public Point Translation
     {
         get => new Point(this.TranslationX, this.TranslationY);
-        set
-        {
-            (this.TranslationX, this.TranslationY) = value;
-        }
+        set => (this.TranslationX, this.TranslationY) = value;
     }
-    //Point _translation;
 
     internal bool IsMoving => _isMoving;
     protected bool _isMoving = false;
 
     readonly GraphicsView _gv;
-    //readonly protected PanelDrawable Drawable;
 
     public int ID {get; init;}
 
@@ -51,9 +46,6 @@ abstract internal partial class SlidePanelView : ContentView
 
         this.Translation = new Point(clipRect.X, clipRect.Y);
 
-        // this.TranslationX = _translation.X;
-        // this.TranslationY = _translation.Y;
-
         drawable.DrawPanelFrame += DrawPanelFrame;
 
         TapGestureRecognizer tapRecognizer = new TapGestureRecognizer();
@@ -62,19 +54,7 @@ abstract internal partial class SlidePanelView : ContentView
         _gv.GestureRecognizers.Add(tapRecognizer);
     }
 
-    // protected void AddTapRecognizer(Action<SlidePanelView> tapped)
-    // {
-    //     TapGestureRecognizer tapRecognizer = new TapGestureRecognizer();
-    //     tapRecognizer.Tapped += (s, e) =>
-    //     {
-    //         tapped?.Invoke(this);
-    //     };
-
-    //     _gv.GestureRecognizers.Add(tapRecognizer);
-    // }
-
     abstract internal void DrawPanelFrame(ICanvas canvas, RectF clipRect);
-    //abstract public void SetTappedNotifier(Action<SlidePanelView> tapped);
 
     abstract internal Task MoveTo(Point point, uint length);
 

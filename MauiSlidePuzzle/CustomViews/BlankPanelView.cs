@@ -9,16 +9,9 @@ internal class BlankPanelView : SlidePanelView
 	internal override void DrawPanelFrame(ICanvas canvas, RectF clipRect)
     {
         canvas.FillColor = Colors.LightGray;
-		// canvas.StrokeColor = Colors.Black;
-		// canvas.StrokeSize = 10;
 
 		canvas.FillRectangle(clipRect);
     }
-
-    //public override void SetTappedNotifier(Action<SlidePanelView> tapped)
-    //{
-    //    // just ignore the tap
-    //}
 
     async internal override Task MoveTo(Point point, uint length)
     {
