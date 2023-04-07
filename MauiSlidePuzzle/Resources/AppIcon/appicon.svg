@@ -24,8 +24,8 @@
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
      inkscape:zoom="1.8179825"
-     inkscape:cx="175.46924"
-     inkscape:cy="228.27503"
+     inkscape:cx="130.08926"
+     inkscape:cy="228.82508"
      inkscape:window-width="1920"
      inkscape:window-height="1009"
      inkscape:window-x="1917"
@@ -39,7 +39,7 @@
      height="456"
      fill="#512BD4"
      id="rect2"
-     style="fill:#512bd4;fill-opacity:0.199187" />
+     style="fill:#c1b3ff;fill-opacity:1" />
   <path
      style="fill:#ffffff;stroke-width:7.55904;stroke-linejoin:bevel;stroke-opacity:0.461382;fill-opacity:0"
      d="M 0.27503016,228 V 0 H 228 455.72497 V 228 456 H 228 0.27503016 Z"

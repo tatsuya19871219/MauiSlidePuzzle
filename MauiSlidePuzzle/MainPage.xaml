@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiSlidePuzzle.MainPage"
-             xmlns:custom="clr-namespace:MauiSlidePuzzle.CustomViews">
+             xmlns:custom="clr-namespace:MauiSlidePuzzle.CustomViews"
+             BackgroundColor="#C1B3FF">
 
     <VerticalStackLayout VerticalOptions="Center">
 
@@ -14,7 +15,7 @@
 
         <Grid HeightRequest="300" WidthRequest="300">
             <Border StrokeThickness="15"
-                    Stroke="DarkGreen">
+                    Stroke="Black">
                 <custom:SlidePuzzleView x:Name="MyPuzzleView" Source="myshapes.png"
                                         IsEnabled="False"/>
             </Border>
