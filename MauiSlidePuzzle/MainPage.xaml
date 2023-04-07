@@ -7,11 +7,12 @@
 
     <VerticalStackLayout VerticalOptions="Center">
 
-        <Image x:Name="CompletedMessage"
-                Source="completed.png"
-               HorizontalOptions="Center"
-               HeightRequest="80"
-               IsVisible="false"/>
+        <Grid HeightRequest="80">
+            <Image x:Name="CompletedMessage"
+                    Source="completed.png"
+                    HorizontalOptions="Center"
+                    IsVisible="false"/>
+        </Grid>
 
         <Grid HeightRequest="300" WidthRequest="300">
             <Border StrokeThickness="15"
@@ -21,11 +22,19 @@
             </Border>
         </Grid>
 
-        <ImageButton x:Name="StartButton" 
-                     Source="start.png" 
-                     HorizontalOptions="Center"
-                     HeightRequest="80"
-                     IsVisible="false"/>
+        <Grid HeightRequest="80">
+            <ImageButton x:Name="StartButton" 
+                        Source="start.png" 
+                        HorizontalOptions="Center"
+                        IsVisible="false"/>
+        </Grid>
+
+        <Grid HeightRequest="80">
+            <ImageButton x:Name="ResetButton" 
+                        Source="reset.png" 
+                        HorizontalOptions="Center"
+                        IsVisible="false"/>
+        </Grid>
 
     </VerticalStackLayout>
     

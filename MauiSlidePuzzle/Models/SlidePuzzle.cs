@@ -16,6 +16,9 @@ internal class SlidePuzzle
     readonly List<SlidePanel> _panels = new();
     readonly SlidePanel _blank;
 
+    int _currentSeed;
+    int _currentShuffleMoves;
+
     internal SlidePuzzle(int rows, int columns)
     {
         if (rows <= 0 || columns <= 0) throw new ArgumentException("rows and columns should be positive numbers");
@@ -36,15 +39,27 @@ internal class SlidePuzzle
         _blank = _panels.Last();
     }
 
-    internal IEnumerable<SlidePanel> Shuffle(int counts = 10)
+    internal IEnumerable<SlidePanel> Shuffle(int counts)
     {
+        // Store current state for shuffling
+        _currentShuffleMoves = counts;
+        _currentSeed = Random.Shared.Next();
+
+        return Shuffle();
+    }
+
+    IEnumerable<SlidePanel> Shuffle()
+    {
+        Random random = new Random(_currentSeed);
+
         int i = 0;
 
-        while (i < counts)
+        while (i < _currentShuffleMoves)
         {
             var neighbors = GetNeighbors(_blank);
 
-            var k = Random.Shared.Next(neighbors.Count);
+            //var k = Random.Shared.Next(neighbors.Count);
+            var k = random.Next(neighbors.Count);
             var panel = neighbors[k];
 
             if (TryMove(panel))
@@ -54,6 +69,15 @@ internal class SlidePuzzle
             }
             else continue;
         }
+    }
+
+    internal void Reset()
+    {   
+        // Set initial location for each panel
+        foreach (var panel in _panels) 
+            panel.Location = _initialLocations[panel.ID];
+
+        foreach (var _ in Shuffle()) {}
     }
 
     internal bool TryMove(SlidePanel panel)
@@ -81,4 +105,6 @@ internal class SlidePuzzle
     {
         return _panels.All(p => p.IsInitialLocation());
     }
+
+    //int GetRandomSeed() => Random.Shared.Next();
 }

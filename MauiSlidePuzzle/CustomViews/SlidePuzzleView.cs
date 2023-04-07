@@ -27,6 +27,9 @@ public class SlidePuzzleView : ContentView
 
 	Microsoft.Maui.Graphics.IImage _image;
 
+	double _panelWidth;
+	double _panelHeight;
+
 	readonly Grid _grid;
 	readonly List<SlidePanelView> _panelViews = new();
 
@@ -49,14 +52,16 @@ public class SlidePuzzleView : ContentView
 		double width = _image.Width;
 		double height = _image.Height;
 
-		double panelWidth = width / columns;
-		double panelHeight = height / rows;
+		_panelWidth = width / columns;
+		_panelHeight = height / rows;
 
 		foreach (var panel in model.Panels)
 		{
 			int id = panel.ID;
 			Point loc = panel.Location;
-			RectF clipRect = new Rect(loc.X*panelWidth, loc.Y*panelHeight, panelWidth, panelHeight);
+			Point translation = ConvertLocToTrans(loc);
+			//RectF clipRect = new Rect(loc.X*panelWidth, loc.Y*panelHeight, panelWidth, panelHeight);
+			RectF clipRect = new Rect(translation, new Size(_panelWidth, _panelHeight));
 
 			SlidePanelView panelView;
 
@@ -72,6 +77,9 @@ public class SlidePuzzleView : ContentView
 		}
 
 	}
+
+	internal Point ConvertLocToTrans(Point location)
+		=> new Point(location.X*_panelWidth, location.Y*_panelHeight);
 
     protected override void OnSizeAllocated(double width, double height)
     {

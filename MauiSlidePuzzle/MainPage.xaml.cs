@@ -6,6 +6,9 @@ namespace MauiSlidePuzzle;
 public partial class MainPage : ContentPage
 {
 	readonly SlidePuzzleController _controller;
+
+	CancellationTokenSource _cancellationTokenSource; // = new CancellationTokenSource();
+	CancellationToken _cancellationToken => _cancellationTokenSource.Token;
 	
 	public MainPage()
 	{
@@ -23,6 +26,9 @@ public partial class MainPage : ContentPage
 		_controller.OnCompleted += () =>
 		{
 			CompletedMessage.IsVisible = true;
+			ResetButton.IsVisible = false;
+
+			_cancellationTokenSource?.Cancel();
 
 			// Retart 
 			_controller.OnReady?.Invoke();
@@ -35,8 +41,41 @@ public partial class MainPage : ContentPage
 			CompletedMessage.IsVisible = false;
 			StartButton.IsVisible = false;
 			await _controller.ShuffleAsync();
+
+			await ShowResetButtonAsync();
 		};
 
+		ResetButton.Clicked += async (s, e) =>
+		{
+			ResetButton.IsVisible = false;
+
+			await _controller.ResetAsync();
+
+			await ShowResetButtonAsync();
+		};
+
+	}
+
+	async Task ShowResetButtonAsync(int milliseconds = 5000)
+	{
+		_cancellationTokenSource = new CancellationTokenSource();
+
+		try
+		{
+			await Task.Delay(milliseconds, _cancellationToken);
+		}
+		catch (OperationCanceledException ex)
+		{
+			// Need not to show reset button
+			return;
+		}
+		finally
+		{
+			_cancellationTokenSource.Dispose();
+			_cancellationTokenSource = null;
+		}
+
+		ResetButton.IsVisible = true;
 	}
 
 }

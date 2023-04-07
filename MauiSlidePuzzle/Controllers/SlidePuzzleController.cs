@@ -58,6 +58,38 @@ internal class SlidePuzzleController
         else EnablePanelTap();
     }
 
+    async internal Task ResetAsync()
+    {
+        // foreach (var panel in _model.Reset())
+        // {
+        //     var id = panel.ID;
+
+        //     ImagePanelView imagePanelView = _view.PanelViews[id] as ImagePanelView;
+        //     //BlankPanelView blankPanelView = _view.BlankPanelView;
+
+        //     uint dt = 50;
+
+            
+        // }
+
+        //List<Point> lastLocations = _model.Panels.Select(p => p.Location).ToList();
+
+        _model.Reset();
+
+        foreach (var panel in _model.Panels)
+        //foreach (var panel in _model.Reset())
+        {
+            int id = panel.ID;
+
+            SlidePanelView slidePanelView = _view.PanelViews[id];
+
+            Point translation =  _view.ConvertLocToTrans(panel.Location);
+            uint dt = 10;
+            
+            await slidePanelView.MoveTo(translation, dt);
+        }
+    }
+
     async void PanelTapped(SlidePanelView panelView)
     {
         if (panelView.IsMoving) return;
@@ -94,4 +126,15 @@ internal class SlidePuzzleController
         _ = blankPanelView.MoveTo(trans0, length);
         await imagePanelView.MoveTo(trans1, length);
     }
+
+    // async Task SwapPanelTranslationAsync(SlidePanelView slidePanelView0, SlidePanelView slidePanelView1, uint length)
+    // {
+    //     Point trans0 = slidePanelView0.Translation;
+    //     Point trans1 = slidePanelView1.Translation;
+
+    //     slidePanelView1.ZIndex = slidePanelView0.ZIndex - 1;
+
+    //     _ = slidePanelView1.MoveTo(trans0, length);
+    //     await slidePanelView0.MoveTo(trans1, length);
+    // }
 }
