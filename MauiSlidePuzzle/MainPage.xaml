@@ -13,8 +13,8 @@
                IsVisible="false"/>
 
         <Grid HeightRequest="300" WidthRequest="300">
-            <Border StrokeThickness="10"
-                    Stroke="Brown">
+            <Border StrokeThickness="15"
+                    Stroke="DarkGreen">
                 <custom:SlidePuzzleView x:Name="MyPuzzleView" Source="myshapes.png"
                                         IsEnabled="False"/>
             </Border>
