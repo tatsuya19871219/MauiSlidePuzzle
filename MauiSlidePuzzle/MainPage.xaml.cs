@@ -5,6 +5,14 @@ namespace MauiSlidePuzzle;
 
 public partial class MainPage : ContentPage
 {
+	public static BindableProperty ImageFilenameProperty = BindableProperty.Create(nameof(ImageFilename), typeof(string), typeof(MainPage), null);
+	
+	public string ImageFilename
+	{
+		get => (string)GetValue(ImageFilenameProperty);
+		set => SetValue(ImageFilenameProperty, value);
+	}
+
 	readonly SlidePuzzleController _controller;
 
 	CancellationTokenSource _cancellationTokenSource; // = new CancellationTokenSource();

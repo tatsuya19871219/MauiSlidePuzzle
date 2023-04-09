@@ -36,6 +36,7 @@ public class SlidePuzzleView : ContentView
 
 	internal void Initialize(SlidePuzzle model)
 	{
+		// todo : should be await until source has been set
 		if (Source is null) throw new Exception("Source is not set yet.");
 		
 		_grid.Clear();

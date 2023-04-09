@@ -24,7 +24,7 @@
         <Grid HeightRequest="300" WidthRequest="300">
             <Border StrokeThickness="15"
                     Stroke="Black">
-                <custom:SlidePuzzleView x:Name="MyPuzzleView" Source="myshapes.png"
+                <custom:SlidePuzzleView x:Name="MyPuzzleView" Source="{Binding ImageFilename}"
                                         IsEnabled="False"/>
             </Border>
         </Grid>
