@@ -1,9 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-//using Microsoft.Maui;
-//using Microsoft.Maui.Hosting;
-//using Microsoft.Maui.Controls.Hosting;
-//using SkiaSharp.Views.Maui.Controls.Hosting;
-//using Microsoft.Maui.Controls.Compatibility.Hosting;
+using SkiaSharp.Views.Maui.Controls.Hosting;
 
 namespace MauiSlidePuzzle;
 
@@ -13,7 +9,7 @@ public static class MauiProgram
 	{
 		var builder = MauiApp.CreateBuilder();
 		builder
-			//.UseSkiaSharp(true)
+			.UseSkiaSharp(true)
 			.UseMauiApp<App>()
 			.ConfigureFonts(fonts =>
 			{

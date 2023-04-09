@@ -1,15 +1,19 @@
-#if WINDOWS
-using Microsoft.Maui.Graphics.Skia;
-using Microsoft.Maui.Graphics.Skia.Views;
+//#if WINDOWS
+//using Microsoft.Maui.Graphics.Skia;
+//using Microsoft.Maui.Graphics.Skia.Views;
+//using SkiaSharp;
+//#else
+//using Microsoft.Maui.Graphics.Platform;
+//#endif
+
 using SkiaSharp;
-#else
-using Microsoft.Maui.Graphics.Platform;
-#endif
+using SkiaSharp.Views.Maui;
 
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
 using MauiSlidePuzzle.Models;
+using SkiaSharp.Views.Maui.Controls;
 
 namespace MauiSlidePuzzle.CustomViews;
 
@@ -25,7 +29,9 @@ public class SlidePuzzleView : ContentView
 	internal List<SlidePanelView> PanelViews => _panelViews;
 	internal BlankPanelView BlankPanelView {get; private set;}
 
-	Microsoft.Maui.Graphics.IImage _image;
+	//Microsoft.Maui.Graphics.IImage _image;
+
+	SKImage _skImage;
 
 	double _panelWidth;
 	double _panelHeight;
@@ -49,8 +55,11 @@ public class SlidePuzzleView : ContentView
 		int rows = model.Rows;
 		int columns = model.Columns;
 
-		double width = _image.Width;
-		double height = _image.Height;
+		//double width = _image.Width;
+		//double height = _image.Height;
+
+		double width = _skImage.Width;
+		double height = _skImage.Height;
 
 		_panelWidth = width / columns;
 		_panelHeight = height / rows;
@@ -66,14 +75,17 @@ public class SlidePuzzleView : ContentView
 			SlidePanelView panelView;
 
 			if (panel == model.BlankPanel)
-				panelView = BlankPanelView 
-							= new BlankPanelView(_image, clipRect, id);
+				panelView = BlankPanelView
+							//= new BlankPanelView(_image, clipRect, id);
+							= new BlankPanelView(_skImage, clipRect, id);
 			else
-				panelView = new ImagePanelView(_image, clipRect, id);
+				panelView //= new ImagePanelView(_image, clipRect, id);
+                    = new ImagePanelView(_skImage, clipRect, id);
 
 			_grid.Add( panelView as IView );
 
 			_panelViews.Add( panelView );
+
 		}
 
 	}
@@ -91,8 +103,8 @@ public class SlidePuzzleView : ContentView
 			_grid.AnchorX = 0;
 			_grid.AnchorY = 0;
 
-			_grid.ScaleX = width / _image.Width;
-			_grid.ScaleY = height / _image.Height;
+			_grid.ScaleX = width / _skImage.Width;
+			_grid.ScaleY = height / _skImage.Height;
 		}
     }
 
@@ -105,21 +117,31 @@ public class SlidePuzzleView : ContentView
 		{
 			case nameof(Source):
 
-				SetImageFromFileImageSource(Source);
+				//SetImageFromFileImageSource(Source);
+				SetSKImageFromFileImageSource(Source);
 
 				break;			
         }
 	}
 
-	internal void SetImageFromFileImageSource(FileImageSource source)
+//	internal void SetImageFromFileImageSource(FileImageSource source)
+//	{
+//		using ( Stream stream = GetStreamFromFileImageSource(source) ) 
+//		{
+//#if WINDOWS
+//			_image = SkiaImage.FromStream( stream );
+//#else
+//			_image = PlatformImage.FromStream( stream );
+//#endif
+//		}
+//	}
+
+	internal void SetSKImageFromFileImageSource(FileImageSource source)
 	{
-		using ( Stream stream = GetStreamFromFileImageSource(source) ) 
+		using ( Stream stream = GetStreamFromFileImageSource(source) )
 		{
-#if WINDOWS
-			_image = SkiaImage.FromStream( stream );
-#else
-			_image = PlatformImage.FromStream( stream );
-#endif
+			SKBitmap bitmap = SKBitmap.Decode( stream );
+			_skImage = SKImage.FromBitmap( bitmap );
 		}
 	}
 

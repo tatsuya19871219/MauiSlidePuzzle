@@ -3,7 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiSlidePuzzle.MainPage"
              xmlns:custom="clr-namespace:MauiSlidePuzzle.CustomViews"
+             xmlns:skia="clr-namespace:SkiaSharp.Views.Maui.Controls;assembly=SkiaSharp.Views.Maui.Controls"
              BackgroundColor="#C1B3FF">
+
+    <ContentPage.Resources>
+        <Style TargetType="ImageButton">
+            <Setter Property="BackgroundColor" Value="Transparent"/>
+        </Style>
+    </ContentPage.Resources>
 
     <VerticalStackLayout VerticalOptions="Center">
 

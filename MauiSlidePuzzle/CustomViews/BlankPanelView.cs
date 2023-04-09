@@ -1,10 +1,12 @@
+using SkiaSharp;
+
 namespace MauiSlidePuzzle.CustomViews;
 
 internal class BlankPanelView : SlidePanelView
 {
-	internal BlankPanelView(Microsoft.Maui.Graphics.IImage image, RectF clipRect, int id) : base(image, clipRect, id)
-	{
-	}
+	//internal BlankPanelView(Microsoft.Maui.Graphics.IImage image, RectF clipRect, int id) : base(image, clipRect, id) { }
+
+    internal BlankPanelView(SKImage skImage, RectF clipRect, int id) : base(skImage, clipRect, id) { }
 
 	internal override void DrawPanelFrame(ICanvas canvas, RectF clipRect)
     {
