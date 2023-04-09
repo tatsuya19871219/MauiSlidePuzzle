@@ -1,19 +1,9 @@
-//#if WINDOWS
-//using Microsoft.Maui.Graphics.Skia;
-//using Microsoft.Maui.Graphics.Skia.Views;
-//using SkiaSharp;
-//#else
-//using Microsoft.Maui.Graphics.Platform;
-//#endif
-
 using SkiaSharp;
-using SkiaSharp.Views.Maui;
 
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
 using MauiSlidePuzzle.Models;
-using SkiaSharp.Views.Maui.Controls;
 
 namespace MauiSlidePuzzle.CustomViews;
 
@@ -28,8 +18,6 @@ public class SlidePuzzleView : ContentView
 
 	internal List<SlidePanelView> PanelViews => _panelViews;
 	internal BlankPanelView BlankPanelView {get; private set;}
-
-	//Microsoft.Maui.Graphics.IImage _image;
 
 	SKImage _skImage;
 
@@ -55,9 +43,6 @@ public class SlidePuzzleView : ContentView
 		int rows = model.Rows;
 		int columns = model.Columns;
 
-		//double width = _image.Width;
-		//double height = _image.Height;
-
 		double width = _skImage.Width;
 		double height = _skImage.Height;
 
@@ -68,19 +53,16 @@ public class SlidePuzzleView : ContentView
 		{
 			int id = panel.ID;
 			Point loc = panel.Location;
-			Point translation = ConvertLocToTrans(loc);
-			//RectF clipRect = new Rect(loc.X*panelWidth, loc.Y*panelHeight, panelWidth, panelHeight);
+			Point translation = ConvertLocToTrans(loc);			
 			RectF clipRect = new Rect(translation, new Size(_panelWidth, _panelHeight));
 
 			SlidePanelView panelView;
 
 			if (panel == model.BlankPanel)
 				panelView = BlankPanelView
-							//= new BlankPanelView(_image, clipRect, id);
 							= new BlankPanelView(_skImage, clipRect, id);
 			else
-				panelView //= new ImagePanelView(_image, clipRect, id);
-                    = new ImagePanelView(_skImage, clipRect, id);
+				panelView = new ImagePanelView(_skImage, clipRect, id);
 
 			_grid.Add( panelView as IView );
 
@@ -108,7 +90,6 @@ public class SlidePuzzleView : ContentView
 		}
     }
 
-    
 	protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         base.OnPropertyChanged(propertyName);
@@ -117,32 +98,14 @@ public class SlidePuzzleView : ContentView
 		{
 			case nameof(Source):
 
-				//SetImageFromFileImageSource(Source);
-				SetSKImageFromFileImageSource(Source);
+				using ( Stream stream = GetStreamFromFileImageSource(Source) )
+				{
+					SKBitmap bitmap = SKBitmap.Decode(stream);
+					_skImage = SKImage.FromBitmap(bitmap);
+				}
 
 				break;			
         }
-	}
-
-//	internal void SetImageFromFileImageSource(FileImageSource source)
-//	{
-//		using ( Stream stream = GetStreamFromFileImageSource(source) ) 
-//		{
-//#if WINDOWS
-//			_image = SkiaImage.FromStream( stream );
-//#else
-//			_image = PlatformImage.FromStream( stream );
-//#endif
-//		}
-//	}
-
-	internal void SetSKImageFromFileImageSource(FileImageSource source)
-	{
-		using ( Stream stream = GetStreamFromFileImageSource(source) )
-		{
-			SKBitmap bitmap = SKBitmap.Decode( stream );
-			_skImage = SKImage.FromBitmap( bitmap );
-		}
 	}
 
 	Stream GetStreamFromFileImageSource(FileImageSource source)
