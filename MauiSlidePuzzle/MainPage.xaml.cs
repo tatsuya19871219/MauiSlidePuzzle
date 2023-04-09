@@ -1,23 +1,33 @@
 ﻿using MauiSlidePuzzle.Controllers;
 using MauiSlidePuzzle.Models;
+//using Windows.Storage.Pickers.Provider;
 
 namespace MauiSlidePuzzle;
 
 public partial class MainPage : ContentPage
 {
-	public static BindableProperty ImageFilenameProperty = BindableProperty.Create(nameof(ImageFilename), typeof(string), typeof(MainPage), null);
-	
-	public string ImageFilename
-	{
-		get => (string)GetValue(ImageFilenameProperty);
-		set => SetValue(ImageFilenameProperty, value);
-	}
+	//public static readonly BindableProperty ImageFilenameProperty = BindableProperty.Create(nameof(ImageFilename), typeof(string), typeof(MainPage), null);
+
+	//public string ImageFilename
+	//{
+	//	get => (string)GetValue(ImageFilenameProperty);
+	//	set => SetValue(ImageFilenameProperty, value);
+	//}
 
 	readonly SlidePuzzleController _controller;
 
 	CancellationTokenSource _cancellationTokenSource; // = new CancellationTokenSource();
 	CancellationToken _cancellationToken => _cancellationTokenSource.Token;
-	
+
+	//public MainPage(string filename)
+	//{
+	//	//ImageFilename = filename;
+
+	//	InitializeComponent();
+
+	//MyPuzzleView.EmbeddedImageSource = filename;
+	//}
+
 	public MainPage()
 	{
 		InitializeComponent();

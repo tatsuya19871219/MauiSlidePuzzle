@@ -41,7 +41,7 @@
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
 		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
-		<EmbeddedResource Include="Resources\Images\myshapes.png" />
+		<EmbeddedResource Include="Resources\Images\Puzzles\*" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
@@ -60,9 +60,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="AppTabbedPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="CustomViews\ClipImagePanel.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

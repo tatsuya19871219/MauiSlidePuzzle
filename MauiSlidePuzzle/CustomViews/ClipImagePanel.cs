@@ -30,6 +30,8 @@ public partial class ClipImagePanel : ContentView
 
 		canvas.DrawImage(Image, sourceRect, destRect);
 
+		//canvas.DrawImage(Image, 0, 0);
+
 	}
 
 }
