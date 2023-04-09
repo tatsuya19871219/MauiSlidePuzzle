@@ -11,7 +11,7 @@ internal class ImagePanelView : SlidePanelView
 		canvas.StrokeColor = Colors.Black;
 		canvas.StrokeSize = 10;
 		
-		canvas.Alpha = 128;
+		canvas.Alpha = 96;
 		canvas.DrawRectangle(clipRect);
 	}
 
