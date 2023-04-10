@@ -8,17 +8,17 @@ namespace MauiSlidePuzzle;
 
 public partial class MainPage : ContentPage
 {
-	//public static readonly BindableProperty ImageFilenameProperty = BindableProperty.Create(nameof(ImageFilename), typeof(string), typeof(MainPage), null);
+	public static readonly BindableProperty CurrentStageInfoProperty = BindableProperty.Create(nameof(CurrentStageInfo), typeof(StageInfo), typeof(MainPage), null);
 
-	//public string ImageFilename
-	//{
-	//	get => (string)GetValue(ImageFilenameProperty);
-	//	set => SetValue(ImageFilenameProperty, value);
-	//}
+	public StageInfo CurrentStageInfo
+	{
+		get => (StageInfo)GetValue(CurrentStageInfoProperty);
+		set => SetValue(CurrentStageInfoProperty, value);
+	}
 
 	readonly SlidePuzzleController _controller;
 
-	//readonly List<string> _imageList = new();
+	readonly List<StageInfo> _stageList = new();
 
 	CancellationTokenSource _cancellationTokenSource; // = new CancellationTokenSource();
 	CancellationToken _cancellationToken => _cancellationTokenSource.Token;
@@ -27,6 +27,21 @@ public partial class MainPage : ContentPage
 	public MainPage()
 	{
 		InitializeComponent();
+
+		BindingContext = this;
+
+		// Initialize stage info
+		_stageList.Add( new("Stage 1", "myshapes.png", 3, 3) );
+		_stageList.Add( new("Stage 2", "puzzle.png", 6, 6) );
+
+		CurrentStageInfo = _stageList.First();
+
+
+		//PuzzleTitleView.BindingContext = CurrentStageInfo;
+		//Hoge.Text = CurrentStageInfo.StageName;
+		//Hoge.BindingContext = CurrentStageInfo;
+
+		//var resourceHelper = PuzzleResourceHelper.Instance;
 
 		var puzzle = new SlidePuzzle(3, 3);
 

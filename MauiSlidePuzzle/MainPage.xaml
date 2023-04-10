@@ -7,9 +7,10 @@
              BackgroundColor="#C1B3FF">
 
     <Shell.TitleView>
-        <Grid Margin="20, 0, 20, 0">
+        <Grid x:Name="PuzzleTitleView" Margin="20, 0, 20, 0"
+              BindingContext="{Binding CurrentStageInfo}">
 
-            <Label Text="AAA"
+            <Label Text="{Binding StageName}"
                    FontSize="24" TextColor="White"
                    HorizontalOptions="Start" VerticalOptions="Center"/>
 
@@ -24,8 +25,11 @@
                 <ImageButton Source="left.png"
                              HeightRequest="{StaticResource IconSize}" WidthRequest="{StaticResource IconSize}"/>
 
-                <Image Source="start.png"
-                       HeightRequest="{StaticResource IconSize}" WidthRequest="{StaticResource IconSize}"/>
+                <!--<Image Source="{Binding EmbeddedImagePath}"
+                       HeightRequest="{StaticResource IconSize}" WidthRequest="{StaticResource IconSize}"/>-->
+
+                <ImageButton Source="reload.png"
+                             HeightRequest="{StaticResource IconSize}" WidthRequest="{StaticResource IconSize}"/>
 
                 <ImageButton Source="right.png"
                                 HeightRequest="{StaticResource IconSize}" WidthRequest="{StaticResource IconSize}"/>
@@ -40,7 +44,7 @@
         </Style>
     </ContentPage.Resources>
 
-    <VerticalStackLayout VerticalOptions="Center">
+    <VerticalStackLayout VerticalOptions="Center" BindingContext="{Binding CurrentStageInfo}">
 
         <Grid HeightRequest="80">
             <Image x:Name="CompletedMessage"
@@ -50,11 +54,13 @@
         </Grid>
 
         <Grid HeightRequest="300" WidthRequest="300">
+
             <Border StrokeThickness="15"
                     Stroke="Black">
                 <custom:SlidePuzzleView x:Name="MyPuzzleView" Source="puzzle.png"
                                         IsEnabled="False"/>
             </Border>
+
         </Grid>
 
         <Grid HeightRequest="80">
