@@ -9,7 +9,7 @@ internal class ImagePanelView : SlidePanelView
 	internal override void DrawPanelFrame(ICanvas canvas, RectF clipRect)
 	{
 		canvas.StrokeColor = Colors.Black;
-		canvas.StrokeSize = 10;
+		canvas.StrokeSize = 5;
 		
 		canvas.Alpha = 96;
 		canvas.DrawRectangle(clipRect);

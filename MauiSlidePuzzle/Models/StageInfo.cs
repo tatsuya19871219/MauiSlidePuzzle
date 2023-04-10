@@ -19,8 +19,9 @@ public partial class StageInfo : ObservableObject
     [ObservableProperty] int _rows;
     [ObservableProperty] int _columns;
     [ObservableProperty] string _embeddedImagePath;
+    [ObservableProperty] int _shuffleCounts;
 
-    internal StageInfo(string stageName, string imageFilename, int rows, int columns)
+    internal StageInfo(string stageName, string imageFilename, int rows, int columns, int counts = 10)
     {
         if (rows < 1 || columns < 1) throw new ArgumentException("Puzzle rows/columns should be positive");
 
@@ -36,5 +37,7 @@ public partial class StageInfo : ObservableObject
         helper.TryGetEmbededResourcePath(imageFilename, out var embeddPath);
 
         EmbeddedImagePath = embeddPath;
+
+        ShuffleCounts = counts;
     }
 }

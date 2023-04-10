@@ -37,9 +37,11 @@
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+		<!-- <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="{Binding Black}" BaseSize="128,128" /> -->
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
+		<MauiImage Include="Resources\Images\Puzzles\*" />
 		<EmbeddedResource Include="Resources\Images\Puzzles\*" />
 
 		<!-- Custom Fonts -->
@@ -47,6 +49,10 @@
 
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="resources\fonts\FontLicenseNotice" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -58,10 +64,10 @@
 		<PackageReference Include="SkiaSharp.Views.Maui.Core" Version="2.88.3" />
 	</ItemGroup>
 
-	<ItemGroup>
+	<!-- <ItemGroup>
 	  <MauiXaml Update="CustomViews\ClipImagePanel.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	</ItemGroup>
+	</ItemGroup> -->
 
 </Project>

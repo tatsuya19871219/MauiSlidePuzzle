@@ -20,19 +20,31 @@
 
                 <HorizontalStackLayout.Resources>
                     <x:Double x:Key="IconSize">40</x:Double>
+                    <Style TargetType="ImageButton">
+                        <Setter Property="HeightRequest" Value="{StaticResource IconSize}"/>
+                        <Setter Property="WidthRequest" Value="{StaticResource IconSize}"/>
+                        <Setter Property="BackgroundColor" Value="Transparent"/>
+                    </Style>
                 </HorizontalStackLayout.Resources>
 
-                <ImageButton Source="left.png"
-                             HeightRequest="{StaticResource IconSize}" WidthRequest="{StaticResource IconSize}"/>
+                <ImageButton Clicked="PrevStageClicked">
+                    <ImageButton.Source>
+                        <FontImageSource Glyph="&#xf107;" FontFamily="Ionicons"/>
+                    </ImageButton.Source>
+                </ImageButton>
 
-                <!--<Image Source="{Binding EmbeddedImagePath}"
-                       HeightRequest="{StaticResource IconSize}" WidthRequest="{StaticResource IconSize}"/>-->
+                <ImageButton Source="reload.png" Clicked="ReloadStageClicked">
+                    <ImageButton.Source>
+                        <FontImageSource Glyph="&#xf21c;" FontFamily="Ionicons"/>
+                    </ImageButton.Source>
+                </ImageButton>
 
-                <ImageButton Source="reload.png"
-                             HeightRequest="{StaticResource IconSize}" WidthRequest="{StaticResource IconSize}"/>
+                <ImageButton Clicked="NextStageClicked">
+                    <ImageButton.Source>
+                        <FontImageSource Glyph="&#xf10a;" FontFamily="Ionicons"/>
+                    </ImageButton.Source>
+                </ImageButton>
 
-                <ImageButton Source="right.png"
-                                HeightRequest="{StaticResource IconSize}" WidthRequest="{StaticResource IconSize}"/>
             </HorizontalStackLayout>
             
         </Grid>
@@ -44,7 +56,8 @@
         </Style>
     </ContentPage.Resources>
 
-    <VerticalStackLayout VerticalOptions="Center" BindingContext="{Binding CurrentStageInfo}">
+    <VerticalStackLayout VerticalOptions="Center" BindingContext="{Binding CurrentStageInfo}"
+                         Spacing="10">
 
         <Grid HeightRequest="80">
             <Image x:Name="CompletedMessage"
@@ -53,19 +66,34 @@
                     IsVisible="false"/>
         </Grid>
 
-        <Grid HeightRequest="300" WidthRequest="300">
+        <Grid>
 
-            <Border StrokeThickness="15"
-                    Stroke="Black">
-                <custom:SlidePuzzleView x:Name="MyPuzzleView" Source="puzzle.png"
-                                        IsEnabled="False"/>
-            </Border>
+            <RoundRectangle StrokeThickness="20" CornerRadius="10"
+                    Stroke="Brown"
+                    BindingContext="{x:Reference MyPuzzleView}"
+                    WidthRequest="{Binding WidthRequest}" HeightRequest="{Binding HeightRequest}" Scale="1.1">
+            </RoundRectangle>
+                
+            <custom:SlidePuzzleView x:Name="MyPuzzleView"
+                                    IsVisible="True">
+                <x:Arguments>
+                    <x:Double>300</x:Double> <!-- width -->
+                    <x:Double>300</x:Double> <!-- height -->
+                </x:Arguments>
+            </custom:SlidePuzzleView>
+                
+            
+            <Image x:Name="CurrentStageImage" BackgroundColor="White" IsVisible="False"
+                   BindingContext="{x:Reference MyPuzzleView}"
+                   WidthRequest="{Binding WidthRequest}" HeightRequest="{Binding HeightRequest}"/>
+            
 
         </Grid>
 
         <Grid HeightRequest="80">
-            <ImageButton x:Name="StartButton" 
-                        Source="start.png" 
+            <ImageButton x:Name="StartButton"
+                        Source="start.png"
+                         Clicked="StartClicked"
                         HorizontalOptions="Center"
                         IsVisible="false"/>
         </Grid>
@@ -73,6 +101,7 @@
         <Grid HeightRequest="80">
             <ImageButton x:Name="ResetButton" 
                         Source="reset.png" 
+                        Clicked="ResetClicked"
                         HorizontalOptions="Center"
                         IsVisible="false"/>
         </Grid>

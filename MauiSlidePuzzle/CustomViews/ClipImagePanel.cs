@@ -23,7 +23,9 @@ public partial class ClipImagePanel : ContentView
 	{
 		var canvas = e.Surface.Canvas;
 
-		canvas.Clear(SKColors.Pink);
+		//canvas.Clear(SKColors.Pink);
+		canvas.Clear(SKColors.Transparent);
+		//canvas.Clear();
 
 		var sourceRect = new SKRect(ClipRect.Left, ClipRect.Top, ClipRect.Right, ClipRect.Bottom);
 		var destRect = new SKRect(0, 0, ClipRect.Width, ClipRect.Height);

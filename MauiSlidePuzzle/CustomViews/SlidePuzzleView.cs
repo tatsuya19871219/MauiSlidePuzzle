@@ -9,19 +9,14 @@ namespace MauiSlidePuzzle.CustomViews;
 
 public class SlidePuzzleView : ContentView
 {
-	public static readonly BindableProperty SourceProperty = BindableProperty.Create(nameof(Source), typeof(FileImageSource), typeof(SlidePuzzleView), null);
-	public FileImageSource Source
-	{
-		get => (FileImageSource)GetValue(SourceProperty);
-		set => SetValue(SourceProperty, value);
-	}
+	//public static readonly BindableProperty EmbeddedImageSourceProperty = BindableProperty.Create(nameof(EmbeddedImageSource), typeof(string), typeof(SlidePuzzleView), null);
+	//public string EmbeddedImageSource
+	//{
+	//	get => (string)GetValue(EmbeddedImageSourceProperty);
+	//	set => SetValue(EmbeddedImageSourceProperty, value);
+	//}
 
-	public static readonly BindableProperty EmbeddedImageSourceProperty = BindableProperty.Create(nameof(EmbeddedImageSource), typeof(string), typeof(SlidePuzzleView), null);
-	public string EmbeddedImageSource
-	{
-		get => (string)GetValue(EmbeddedImageSourceProperty);
-		set => SetValue(EmbeddedImageSourceProperty, value);
-	}
+//	string _embeddedImageSource;
 
 	internal List<SlidePanelView> PanelViews => _panelViews;
 	internal BlankPanelView BlankPanelView {get; private set;}
@@ -34,23 +29,50 @@ public class SlidePuzzleView : ContentView
 	readonly Grid _grid;
 	readonly List<SlidePanelView> _panelViews = new();
 
-	public SlidePuzzleView()
+	readonly double _width;
+	readonly double _height;
+
+	//public SlidePuzzleView()
+	public SlidePuzzleView(double width, double height)
 	{
 		Content = _grid = new Grid();
 
-		_grid.BackgroundColor = Colors.WhiteSmoke;
+		//_grid.BackgroundColor = Colors.WhiteSmoke;
+
+		this.WidthRequest = _width = width;
+		this.HeightRequest = _height = height;
+
+		//_grid.WidthRequest = _width;
+		//_grid.HeightRequest = _height;
+	}
+
+    internal void SetImageSource(string embeddedImageSource)
+	{
+		var helper = PuzzleResourceHelper.Instance;
+
+		using (Stream stream = helper.GetEmbededResourceStream(embeddedImageSource))
+		{
+			SKBitmap bitmap = SKBitmap.Decode(stream);
+			_skImage = SKImage.FromBitmap(bitmap.Resize(new SKImageInfo((int)_width, (int)_height), SKFilterQuality.Medium));
+		}
+    }
+
+    internal void ClearImageSource()
+	{
+		_skImage?.Dispose();
+		_skImage = null;
+
+		_panelViews.Clear(); // Need this!
 	}
 
 	internal async void Initialize(SlidePuzzle model)
 	{
-		// todo : should be await until source has been set
-		if (Source is null) throw new Exception("Source is not set yet.");
-
-		//while (true)
-		//{
-		//	if (_skImage is not null) break;
-		//	await Task.Delay(100);
-		//}
+		
+		while (true)
+		{
+			if (_skImage is not null) break;
+			await Task.Delay(100);
+		}
 
 		_grid.Clear();
 
@@ -89,69 +111,54 @@ public class SlidePuzzleView : ContentView
 	internal Point ConvertLocToTrans(Point location)
 		=> new Point(location.X*_panelWidth, location.Y*_panelHeight);
 
-    protected override void OnSizeAllocated(double width, double height)
-    {
-        base.OnSizeAllocated(width, height);
+    //   protected override void OnSizeAllocated(double width, double height)
+    //   {
+    //       base.OnSizeAllocated(width, height);
 
-		// Fit grid size to the view
-		if (width > 0 && height > 0)
-		{
-			_grid.AnchorX = 0;
-			_grid.AnchorY = 0;
+    //	// Fit grid size to the view
+    //	if (width > 0 && height > 0)
+    //	{
+    //		_grid.AnchorX = 0;
+    //		_grid.AnchorY = 0;
 
-			_grid.ScaleX = width / _skImage.Width;
-			_grid.ScaleY = height / _skImage.Height;
-		}
-	}
+    //		_grid.ScaleX = width / _skImage.Width;
+    //		_grid.ScaleY = height / _skImage.Height;
+    //	}
+    //}
 
-	protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        base.OnPropertyChanged(propertyName);
+    //protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    //   {
+    //       base.OnPropertyChanged(propertyName);
 
-		switch (propertyName)
-		{
-			case nameof(Source):
+    //	switch (propertyName)
+    //	{
+    //		case nameof(EmbeddedImageSource):
 
-				using (Stream stream = GetStreamFromFileImageSource(Source))
-				{
-					SKBitmap bitmap = SKBitmap.Decode(stream);
-					_skImage = SKImage.FromBitmap(bitmap);
-				}
+    //			var helper = PuzzleResourceHelper.Instance;
 
-				break;
+    //			using (Stream stream = helper.GetEmbededResourceStream(EmbeddedImageSource))
+    //			{
+    //				SKBitmap bitmap = SKBitmap.Decode(stream);
+    //				_skImage = SKImage.FromBitmap(bitmap);
+    //			}
 
-			//case nameof(EmbeddedImageSource):
+    //			break;
+    //	}
+//}
 
-			//	using ( Stream stream = GetStreamFromEmbededResource(EmbeddedImageSource) )
-			//	{
-			//		SKBitmap bitmap = SKBitmap.Decode(stream);
-			//		_skImage = SKImage.FromBitmap(bitmap);
-			//	}
+	
+	// Stream GetStreamFromEmbededResource(string embeddedImageSource)
+	// {
+	// 	// // var file = source.File;
 
-			//	break;
-        }
-	}
+	// 	// Assembly assembly = GetType().GetTypeInfo().Assembly;
 
-	Stream GetStreamFromFileImageSource(FileImageSource source)
-	{
-		var file = source.File;
+	// 	// return assembly.GetManifestResourceStream(embeddedImageSource);
+	// 	// // return assembly.GetManifestResourceStream("MauiSlidePuzzle.Resources.Images.Puzzles.puzzle.png");
 
-		Assembly assembly = GetType().GetTypeInfo().Assembly;
+	// 	var helper = PuzzleResourceHelper.Instance;
 
-		//var files = assembly.GetManifestResourceNames();
-
-		return assembly.GetManifestResourceStream($"MauiSlidePuzzle.Resources.Images.Puzzles.{file}");
-	}
-
-	Stream GetStreamFromEmbededResource(string embeddedImageSource)
-	{
-		// var file = source.File;
-
-		Assembly assembly = GetType().GetTypeInfo().Assembly;
-
-		//return assembly.GetManifestResourceStream(embeddedImageSource);
-		return assembly.GetManifestResourceStream("MauiSlidePuzzle.Resources.Images.Puzzles.puzzle.png");
-
-	}
+	// 	return helper.GetEmbededResourceStream(embeddedImageSource);
+	// }
 
 }

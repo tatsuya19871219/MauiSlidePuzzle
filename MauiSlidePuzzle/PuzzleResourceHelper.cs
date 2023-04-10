@@ -39,4 +39,11 @@ class PuzzleResourceHelper
         
         return exists;
     }
+
+    internal Stream GetEmbededResourceStream(string path)
+    {
+        if (!_puzzleResourceList.Contains(path)) throw new ArgumentException("Unknown embedded resource path is given");
+
+        return _assembly.GetManifestResourceStream(path);
+    }
 }
