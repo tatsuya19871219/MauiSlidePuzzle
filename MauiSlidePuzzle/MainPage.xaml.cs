@@ -1,5 +1,7 @@
 ﻿using MauiSlidePuzzle.Controllers;
 using MauiSlidePuzzle.Models;
+using System.Reflection;
+using System.Reflection.Metadata;
 //using Windows.Storage.Pickers.Provider;
 
 namespace MauiSlidePuzzle;
@@ -16,17 +18,11 @@ public partial class MainPage : ContentPage
 
 	readonly SlidePuzzleController _controller;
 
+	//readonly List<string> _imageList = new();
+
 	CancellationTokenSource _cancellationTokenSource; // = new CancellationTokenSource();
 	CancellationToken _cancellationToken => _cancellationTokenSource.Token;
 
-	//public MainPage(string filename)
-	//{
-	//	//ImageFilename = filename;
-
-	//	InitializeComponent();
-
-	//MyPuzzleView.EmbeddedImageSource = filename;
-	//}
 
 	public MainPage()
 	{

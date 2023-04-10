@@ -6,6 +6,34 @@
              xmlns:skia="clr-namespace:SkiaSharp.Views.Maui.Controls;assembly=SkiaSharp.Views.Maui.Controls"
              BackgroundColor="#C1B3FF">
 
+    <Shell.TitleView>
+        <Grid Margin="20, 0, 20, 0">
+
+            <Label Text="AAA"
+                   FontSize="24" TextColor="White"
+                   HorizontalOptions="Start" VerticalOptions="Center"/>
+
+
+            <HorizontalStackLayout
+                HorizontalOptions="End" VerticalOptions="Center">
+
+                <HorizontalStackLayout.Resources>
+                    <x:Double x:Key="IconSize">40</x:Double>
+                </HorizontalStackLayout.Resources>
+
+                <ImageButton Source="left.png"
+                             HeightRequest="{StaticResource IconSize}" WidthRequest="{StaticResource IconSize}"/>
+
+                <Image Source="start.png"
+                       HeightRequest="{StaticResource IconSize}" WidthRequest="{StaticResource IconSize}"/>
+
+                <ImageButton Source="right.png"
+                                HeightRequest="{StaticResource IconSize}" WidthRequest="{StaticResource IconSize}"/>
+            </HorizontalStackLayout>
+            
+        </Grid>
+    </Shell.TitleView>
+
     <ContentPage.Resources>
         <Style TargetType="ImageButton">
             <Setter Property="BackgroundColor" Value="Transparent"/>
@@ -24,7 +52,7 @@
         <Grid HeightRequest="300" WidthRequest="300">
             <Border StrokeThickness="15"
                     Stroke="Black">
-                <custom:SlidePuzzleView x:Name="MyPuzzleView" Source="myshapes.png"
+                <custom:SlidePuzzleView x:Name="MyPuzzleView" Source="puzzle.png"
                                         IsEnabled="False"/>
             </Border>
         </Grid>

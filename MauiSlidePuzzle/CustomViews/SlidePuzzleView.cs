@@ -138,6 +138,8 @@ public class SlidePuzzleView : ContentView
 
 		Assembly assembly = GetType().GetTypeInfo().Assembly;
 
+		//var files = assembly.GetManifestResourceNames();
+
 		return assembly.GetManifestResourceStream($"MauiSlidePuzzle.Resources.Images.Puzzles.{file}");
 	}
 
@@ -149,6 +151,7 @@ public class SlidePuzzleView : ContentView
 
 		//return assembly.GetManifestResourceStream(embeddedImageSource);
 		return assembly.GetManifestResourceStream("MauiSlidePuzzle.Resources.Images.Puzzles.puzzle.png");
+
 	}
 
 }
