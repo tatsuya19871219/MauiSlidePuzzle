@@ -34,33 +34,39 @@ public partial class MainPage : ContentPage
 
 		BindingContext = this;
 
-		var helper = PuzzleResourceHelper.Instance;
-
-		if (helper.TryGetEmbededResourcePath("Stage1.json", out string path))
-		{
-		using (Stream stream = helper.GetEmbededResourceStream(path))
-		{
-			using var reader = new StreamReader(stream);
-			var contents = reader.ReadToEnd();
-				//StageInfoModel stageInfoModel = JsonSerializer.Deserialize<StageInfoModel>(contents);
-			StageInfo stageInfo = JsonSerializer.Deserialize<StageInfo>(contents);
-		}
-        
-		}
-
-
-		// Initialize stage info
-		_stageList.Add( new("Stage 1", "myshapes.png", 3, 3, 10) );
-		_stageList.Add( new("Stage 2", "sky_and_stars.png", 3, 3, 25) );
-		_stageList.Add( new("Stage 3", "amin.png", 4, 4, 25) );
-		_stageList.Add( new("Stage 4", "guruguru.png", 4, 4, 30) );
-		_stageList.Add( new("Stage 5", "puzzle.png", 6, 6, 50) );
+		// Load stages
+		int k = 1;
+		while( TryLoadStageInfo($"Stage{k++}.json", out var stageInfo) )
+			_stageList.Add( stageInfo );
+		
+		// _stageList.Add( new("Stage 1", "myshapes.png", 3, 3, 10) );
+		// _stageList.Add( new("Stage 2", "sky_and_stars.png", 3, 3, 25) );
+		// _stageList.Add( new("Stage 3", "amin.png", 4, 4, 25) );
+		// _stageList.Add( new("Stage 4", "guruguru.png", 4, 4, 30) );
+		// _stageList.Add( new("Stage 5", "puzzle.png", 6, 6, 50) );
 
 		CurrentStageInfo = _stageList[_indexCurrentStage = 0];
 
 		PrepareNewStage();
 
-}
+	}
+
+	bool TryLoadStageInfo(string filename, out StageInfo stageInfo)
+	{
+		stageInfo = null;
+
+		var helper = PuzzleResourceHelper.Instance;
+
+		if (!helper.TryGetEmbededResourcePath(filename, out string path)) return false;
+		
+		using var stream = helper.GetEmbededResourceStream(path);
+		using var reader = new StreamReader(stream);
+		
+		var contents = reader.ReadToEnd();
+		stageInfo = JsonSerializer.Deserialize<StageInfo>(contents);
+		
+		return true;
+	}
 
 
 	void PrepareNewStage()

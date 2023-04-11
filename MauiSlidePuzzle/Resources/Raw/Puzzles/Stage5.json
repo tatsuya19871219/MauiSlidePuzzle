@@ -1,0 +1,7 @@
+{
+    "StageName" : "Stage 5",
+    "ImageFilename" : "puzzle.png",
+    "Rows" : 6,
+    "Columns" : 6,
+    "ShuffleCounts" : 50
+}
