@@ -9,8 +9,6 @@ public partial class ClipImagePanel : ContentView
 	public SKImage Image {get; init;}
 	public RectF ClipRect {get; init;}
 
-	//public Color BackgroundColor {get}
-
 	readonly SKCanvasView _skiaView;
 
 	public ClipImagePanel()
@@ -35,8 +33,6 @@ public partial class ClipImagePanel : ContentView
 		var destRect = new SKRect(0, 0, ClipRect.Width, ClipRect.Height);
 
 		canvas.DrawImage(Image, sourceRect, destRect);
-
-		//canvas.DrawImage(Image, 0, 0);
 
 	}
 

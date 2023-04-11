@@ -106,55 +106,5 @@ public class SlidePuzzleView : ContentView
 
 	internal Point ConvertLocToTrans(Point location)
 		=> new Point(location.X*_panelWidth, location.Y*_panelHeight);
-
-    //   protected override void OnSizeAllocated(double width, double height)
-    //   {
-    //       base.OnSizeAllocated(width, height);
-
-    //	// Fit grid size to the view
-    //	if (width > 0 && height > 0)
-    //	{
-    //		_grid.AnchorX = 0;
-    //		_grid.AnchorY = 0;
-
-    //		_grid.ScaleX = width / _skImage.Width;
-    //		_grid.ScaleY = height / _skImage.Height;
-    //	}
-    //}
-
-    //protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    //   {
-    //       base.OnPropertyChanged(propertyName);
-
-    //	switch (propertyName)
-    //	{
-    //		case nameof(EmbeddedImageSource):
-
-    //			var helper = PuzzleResourceHelper.Instance;
-
-    //			using (Stream stream = helper.GetEmbededResourceStream(EmbeddedImageSource))
-    //			{
-    //				SKBitmap bitmap = SKBitmap.Decode(stream);
-    //				_skImage = SKImage.FromBitmap(bitmap);
-    //			}
-
-    //			break;
-    //	}
-//}
-
-	
-	// Stream GetStreamFromEmbededResource(string embeddedImageSource)
-	// {
-	// 	// // var file = source.File;
-
-	// 	// Assembly assembly = GetType().GetTypeInfo().Assembly;
-
-	// 	// return assembly.GetManifestResourceStream(embeddedImageSource);
-	// 	// // return assembly.GetManifestResourceStream("MauiSlidePuzzle.Resources.Images.Puzzles.puzzle.png");
-
-	// 	var helper = PuzzleResourceHelper.Instance;
-
-	// 	return helper.GetEmbededResourceStream(embeddedImageSource);
-	// }
-
+    
 }

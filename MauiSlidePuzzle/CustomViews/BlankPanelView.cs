@@ -8,7 +8,7 @@ internal class BlankPanelView : SlidePanelView
 
 	internal override void DrawPanelFrame(ICanvas canvas, RectF clipRect)
     {
-        canvas.FillColor = Colors.LightGray;
+        canvas.FillColor = this.BackgroundColor; //Colors.LightGray;
 
 		canvas.FillRectangle(clipRect);
     }
@@ -16,11 +16,15 @@ internal class BlankPanelView : SlidePanelView
     async internal override Task MoveTo(Point point, uint length)
     {
         _isMoving = true;
-        this.IsVisible = false;
+        //this.IsVisible = false;
 
-        await this.TranslateTo(point.X, point.Y, 0);
+        this.TranslateTo(point.X, point.Y, 0);
 
-        this.IsVisible = true;
+        this.Opacity = 0;
+
+        await this.FadeTo(1, length);
+
+        //this.IsVisible = true;
         _isMoving = false;
     }
 

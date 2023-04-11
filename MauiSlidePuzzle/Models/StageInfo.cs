@@ -9,11 +9,6 @@ namespace MauiSlidePuzzle.Models;
 
 public partial class StageInfo : ObservableObject
 {
-    // readonly public string StageName;
-    // readonly public string ImageFilename;
-    // readonly public int Rows;
-    // readonly public int Columns;
-
     [ObservableProperty] string _stageName;
     [ObservableProperty] string _imageFilename;
     [ObservableProperty] int _rows;
