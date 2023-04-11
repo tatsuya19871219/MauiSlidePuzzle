@@ -36,8 +36,9 @@ public partial class MainPage : ContentPage
 		// Initialize stage info
 		_stageList.Add( new("Stage 1", "myshapes.png", 3, 3) );
 		_stageList.Add( new("Stage 2", "sky_and_stars.png", 3, 3, 25) );
-		_stageList.Add( new("Stage 3", "guruguru.png", 4, 4, 30) );
-		_stageList.Add( new("Stage 4", "puzzle.png", 6, 6, 50) );
+		_stageList.Add( new("Stage 3", "amin.png", 4, 4, 25) );
+		_stageList.Add( new("Stage 4", "guruguru.png", 4, 4, 30) );
+		_stageList.Add( new("Stage 5", "puzzle.png", 6, 6, 50) );
 
 		CurrentStageInfo = _stageList[_indexCurrentStage = 0];
 
@@ -66,6 +67,7 @@ public partial class MainPage : ContentPage
 
         MyPuzzleView.ClearImageSource();
 		MyPuzzleView.SetImageSource(CurrentStageInfo.EmbeddedImagePath);
+		// set background color here
 
 		var puzzle = new SlidePuzzle(CurrentStageInfo.Rows, CurrentStageInfo.Columns);
 

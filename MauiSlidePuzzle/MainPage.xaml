@@ -3,8 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiSlidePuzzle.MainPage"
              xmlns:custom="clr-namespace:MauiSlidePuzzle.CustomViews"
-             xmlns:skia="clr-namespace:SkiaSharp.Views.Maui.Controls;assembly=SkiaSharp.Views.Maui.Controls"
-             BackgroundColor="#C1B3FF">
+             BackgroundColor="{DynamicResource AppBackgroundColor}">
+
+    <ContentPage.Resources>
+        <Color x:Key="AppBackgroundColor">#C1B3FF</Color>
+        <Style TargetType="ImageButton">
+            <Setter Property="BackgroundColor" Value="Transparent"/>
+        </Style>
+    </ContentPage.Resources>
+
 
     <Shell.TitleView>
         <Grid x:Name="PuzzleTitleView" Margin="20, 0, 20, 0"
@@ -33,7 +40,7 @@
                     </ImageButton.Source>
                 </ImageButton>
 
-                <ImageButton Source="reload.png" Clicked="ReloadStageClicked">
+                <ImageButton Clicked="ReloadStageClicked">
                     <ImageButton.Source>
                         <FontImageSource Glyph="&#xf21c;" FontFamily="Ionicons"/>
                     </ImageButton.Source>
@@ -50,42 +57,44 @@
         </Grid>
     </Shell.TitleView>
 
-    <ContentPage.Resources>
-        <Style TargetType="ImageButton">
-            <Setter Property="BackgroundColor" Value="Transparent"/>
-        </Style>
-    </ContentPage.Resources>
-
-    <VerticalStackLayout VerticalOptions="Center" BindingContext="{Binding CurrentStageInfo}"
-                         Spacing="10">
+    <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center"
+                         BindingContext="{Binding CurrentStageInfo}"
+                         Spacing="20">
 
         <Grid HeightRequest="80">
             <Image x:Name="CompletedMessage"
                     Source="completed.png"
-                    HorizontalOptions="Center"
                     IsVisible="false"/>
         </Grid>
 
         <Grid>
 
-            <RoundRectangle StrokeThickness="20" CornerRadius="10"
-                    Stroke="Brown"
-                    BindingContext="{x:Reference MyPuzzleView}"
-                    WidthRequest="{Binding WidthRequest}" HeightRequest="{Binding HeightRequest}" Scale="1.1">
+            <Grid.Resources>
+                <Style x:Key="PuzzleDecorationStyle" TargetType="View">
+                    <Setter Property="WidthRequest" Value="{Binding Source={x:Reference PuzzleWidth}}"/>
+                    <Setter Property="HeightRequest" Value="{Binding Source={x:Reference PuzzleHeight}}"/>
+                </Style>
+            </Grid.Resources>
+
+            <RoundRectangle StrokeThickness="10" CornerRadius="2"
+                    Stroke="Black" 
+                    Style="{StaticResource PuzzleDecorationStyle}" Scale="1.05">
+                <RoundRectangle.Shadow>
+                    <Shadow Brush="Black" Offset="10, 10" Radius="20" Opacity="0.8"/>
+                </RoundRectangle.Shadow>
             </RoundRectangle>
                 
-            <custom:SlidePuzzleView x:Name="MyPuzzleView"
-                                    IsVisible="True">
+            <custom:SlidePuzzleView x:Name="MyPuzzleView" IsVisible="True">
+                <!-- Arguments of non-default constructor -->
                 <x:Arguments>
-                    <x:Double>300</x:Double> <!-- width -->
-                    <x:Double>300</x:Double> <!-- height -->
+                    <x:Double x:Name="PuzzleWidth">300</x:Double> <!-- 1st arg: width -->
+                    <x:Double x:Name="PuzzleHeight">300</x:Double> <!-- 2nd arg: height -->
                 </x:Arguments>
             </custom:SlidePuzzleView>
                 
             
-            <Image x:Name="CurrentStageImage" BackgroundColor="White" IsVisible="False"
-                   BindingContext="{x:Reference MyPuzzleView}"
-                   WidthRequest="{Binding WidthRequest}" HeightRequest="{Binding HeightRequest}"/>
+            <Image x:Name="CurrentStageImage" BackgroundColor="{StaticResource AppBackgroundColor}" IsVisible="False"
+                   Style="{StaticResource PuzzleDecorationStyle}"/>
             
 
         </Grid>
@@ -93,8 +102,7 @@
         <Grid HeightRequest="80">
             <ImageButton x:Name="StartButton"
                         Source="start.png"
-                         Clicked="StartClicked"
-                        HorizontalOptions="Center"
+                        Clicked="StartClicked"
                         IsVisible="false"/>
         </Grid>
 
@@ -102,7 +110,6 @@
             <ImageButton x:Name="ResetButton" 
                         Source="reset.png" 
                         Clicked="ResetClicked"
-                        HorizontalOptions="Center"
                         IsVisible="false"/>
         </Grid>
 

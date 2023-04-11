@@ -37,13 +37,9 @@ public class SlidePuzzleView : ContentView
 	{
 		Content = _grid = new Grid();
 
-		//_grid.BackgroundColor = Colors.WhiteSmoke;
-
 		this.WidthRequest = _width = width;
 		this.HeightRequest = _height = height;
 
-		//_grid.WidthRequest = _width;
-		//_grid.HeightRequest = _height;
 	}
 
     internal void SetImageSource(string embeddedImageSource)
