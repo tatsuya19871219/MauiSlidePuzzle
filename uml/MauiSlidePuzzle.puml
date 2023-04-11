@@ -146,5 +146,22 @@ state OnGame {
     OnGameCompleted --> OnGameReady
 }
 OnGame --> OnGamePreparing : PrevStageClicked / \nNextStageClicked / \nReloadStageClicked
+@enduml
 
+@startuml AppStates.CompletedMessage
+hide empty description
+[*] -> Default
+Default --> OnGameCompleted
+OnGameCompleted --> Default
+@enduml
+
+@startuml AppStates.CurrentStageImage
+hide empty description
+[*] -> Default
+Default --> OnGameReady
+OnGameReady --> Default
+'OnGameReady --> OnGamePlay
+'OnGamePlay -> OnGameCompleted
+OnGameCompleted --> Default
+Default --> OnGameCompleted
 @enduml

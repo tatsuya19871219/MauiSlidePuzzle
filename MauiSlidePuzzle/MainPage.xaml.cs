@@ -1,5 +1,6 @@
 ﻿using MauiSlidePuzzle.Controllers;
 using MauiSlidePuzzle.Models;
+using Microsoft.Maui.Controls;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Text.Json;
@@ -28,6 +29,8 @@ public partial class MainPage : ContentPage
 	CancellationToken _cancellationToken => _cancellationTokenSource.Token;
 
 
+	IList<VisualStateGroup> _vsgList;
+
 	public MainPage()
 	{
 
@@ -35,7 +38,12 @@ public partial class MainPage : ContentPage
 
 		BindingContext = this;
 
+		_vsgList = VisualStateManager.GetVisualStateGroups(this);
+		//_vsgList = VisualStateManager.GetVisualStateGroups(CompletedMessage);
+
 		GoToAppState("Initialized");
+		GoToElementState(CurrentStageImage, "Default");
+		GoToElementState(CompletedMessage, "Default");
 
 		// Load stages
 		int k = 1;
@@ -55,7 +63,34 @@ public partial class MainPage : ContentPage
 
 	}
 
-	void GoToAppState(string state) => VisualStateManager.GoToState(this, state);
+	void GoToAppState(string state)
+	{
+		VisualStateManager.GoToState(this, state);
+
+		//if (VisualStatesContains(CompletedMessage, state))
+		//	VisualStateManager.GoToState(CompletedMessage, state);
+		//else
+		//	VisualStateManager.GoToState(CompletedMessage, "Default");
+
+		//if (VisualStatesContains(CurrentStageImage, state))
+		//	VisualStateManager.GoToState(CurrentStageImage, state);
+		//else
+		//	VisualStateManager.GoToState(CurrentStageImage, "Default");
+	}
+
+	void GoToElementState(VisualElement element, string state)
+	{
+		VisualStateManager.GoToState(element, state);
+	}
+
+	//bool VisualStatesContains(VisualElement element, string state)
+	//{
+	//	var visualStateGroups = VisualStateManager.GetVisualStateGroups(element);
+
+	//	if (visualStateGroups.Count == 0) throw new Exception($"No visual state group is set for {element.StyleId}");
+
+ //       return VisualStateManager.GetVisualStateGroups(element).FirstOrDefault().States.Any(s => s.Name.Equals(state));
+	//}
 
 	bool TryLoadStageInfo(string filename, out StageInfo stageInfo)
 	{
@@ -80,14 +115,13 @@ public partial class MainPage : ContentPage
 		if (CurrentStageInfo is null) throw new Exception("Stage info is not set yet");
 
 		GoToAppState("OnGamePreparing");
+		GoToElementState(CurrentStageImage, "OnGamePreparing");
 
 		FinalizeLastStage();
-		//_cancellationTokenSource?.Cancel();
 
         // Prepare a puzzle according to the CurrentStageInfo
 		CurrentStageImage.Source = CurrentStageInfo.ImageFilename;
 
-        //MyPuzzleView.ClearImageSource();
 		MyPuzzleView.SetImageSource(CurrentStageInfo.EmbeddedImagePath);
 
 		var puzzle = new SlidePuzzle(CurrentStageInfo.Rows, CurrentStageInfo.Columns);
@@ -97,18 +131,18 @@ public partial class MainPage : ContentPage
 
 		_controller.OnReady += () => GoToAppState("OnGameReady");
 
-		_controller.OnCompleted += () =>
+		_controller.OnCompleted += async () =>
 		{
 			GoToAppState("OnGameCompleted");
-			//CompletedMessage.IsVisible = true;
-			//ResetButton.IsVisible = false;
+			GoToElementState(CurrentStageImage, "OnGameCompleted");
+			GoToElementState(CompletedMessage, "OnGameCompleted");
 
-			//CurrentStageImage.IsVisible = true;
-			
+			await CompletedMessage.ScaleTo(1.2);
+			await CompletedMessage.ScaleTo(1.0);
+
 			FinalizeLastStage();
-			//_cancellationTokenSource?.Cancel();
-
-			// Retart 
+			
+			// Restart 
 			_controller.OnReady?.Invoke();
 		};
 
@@ -120,10 +154,9 @@ public partial class MainPage : ContentPage
 	async void StartClicked(object sender, EventArgs e)
 	{
 		GoToAppState("OnGamePlay");
-		// CurrentStageImage.IsVisible = false;
-		// CompletedMessage.IsVisible = false;
-		// StartButton.IsVisible = false;
-
+		GoToElementState(CurrentStageImage, "Default");
+		GoToElementState(CompletedMessage, "Default");
+		
 		await _controller.ShuffleAsync(CurrentStageInfo.ShuffleCounts);
 
 		await ShowResetButtonAsync();
@@ -132,9 +165,10 @@ public partial class MainPage : ContentPage
 	async void ResetClicked(object sender, EventArgs e)
 	{
 		GoToAppState("OnGameReset");
-		//ResetButton.IsVisible = false;
 
 		await _controller.ResetAsync();
+
+		GoToAppState("OnGamePlay");
 
 		await ShowResetButtonAsync();
 	}
@@ -184,12 +218,10 @@ public partial class MainPage : ContentPage
 		}
 		finally
 		{
-			//ResetCancellationToken();
 			_cancellationTokenSource?.Dispose();
 			_cancellationTokenSource = null;
 		}
 
-		//GoToAppState("OnGameReadyToReset");
 		ResetButton.IsVisible = true;
 	}
 
@@ -197,13 +229,5 @@ public partial class MainPage : ContentPage
 	{
 		_cancellationTokenSource?.Cancel();
 	}
-
-	// void ResetCancellationToken()
-	// {
-	// 	//_cancellationTokenSource?.Cancel();
-	// 	_cancellationTokenSource?.Dispose();
-	// 	_cancellationTokenSource = null;
-	// 	ResetButton.IsVisible = false;
-	// }
 
 }

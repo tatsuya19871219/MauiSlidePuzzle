@@ -37,7 +37,6 @@
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
-		<!-- <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="{Binding Black}" BaseSize="128,128" /> -->
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -53,11 +52,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="resources\fonts\FontLicenseNotice" />
-	  <None Remove="resources\raw\puzzles\Stage1.json" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Maui.Graphics.Skia" Version="7.0.59" />
@@ -65,15 +59,5 @@
 		<PackageReference Include="SkiaSharp.Views.Maui.Controls.Compatibility" Version="2.88.3" />
 		<PackageReference Include="SkiaSharp.Views.Maui.Core" Version="2.88.3" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Resources\Raw\Puzzles\" />
-	</ItemGroup>
-
-	<!-- <ItemGroup>
-	  <MauiXaml Update="CustomViews\ClipImagePanel.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	</ItemGroup> -->
 
 </Project>
