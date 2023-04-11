@@ -53,7 +53,7 @@
                 </ImageButton>
 
             </HorizontalStackLayout>
-            
+
         </Grid>
     </Shell.TitleView>
 
@@ -75,19 +75,21 @@
                     <Setter Property="HeightRequest" Value="{Binding Source={x:Reference PuzzleHeight}}"/>
                 </Style>
             </Grid.Resources>
-                
+
             <custom:SlidePuzzleView x:Name="MyPuzzleView" IsVisible="True">
                 <!-- Arguments of non-default constructor -->
                 <x:Arguments>
-                    <x:Double x:Name="PuzzleWidth">300</x:Double> <!-- 1st arg: width -->
-                    <x:Double x:Name="PuzzleHeight">300</x:Double> <!-- 2nd arg: height -->
+                    <!-- 1st arg: width -->
+                    <x:Double x:Name="PuzzleWidth">300</x:Double>
+                    <!-- 2nd arg: height -->
+                    <x:Double x:Name="PuzzleHeight">300</x:Double>
                 </x:Arguments>
             </custom:SlidePuzzleView>
 
             <RoundRectangle StrokeThickness="10" CornerRadius="2"
                     Stroke="Black" 
                     Style="{StaticResource PuzzleDecorationStyle}" Scale="1.05"
-                            InputTransparent="True">
+                    InputTransparent="True">
                 <!--<RoundRectangle.Shadow>
                     <Shadow Brush="Black" Offset="10, 10" Radius="20" Opacity="0.8"/>
                 </RoundRectangle.Shadow>-->
@@ -95,7 +97,7 @@
 
             <Image x:Name="CurrentStageImage" BackgroundColor="{StaticResource AppBackgroundColor}" IsVisible="False"
                    Style="{StaticResource PuzzleDecorationStyle}"/>
-            
+
 
         </Grid>
 
@@ -114,5 +116,5 @@
         </Grid>
 
     </VerticalStackLayout>
-    
+
 </ContentPage>
