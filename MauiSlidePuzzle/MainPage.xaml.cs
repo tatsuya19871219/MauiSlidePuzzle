@@ -2,6 +2,7 @@
 using MauiSlidePuzzle.Models;
 using System.Reflection;
 using System.Reflection.Metadata;
+using System.Text.Json;
 //using Windows.Storage.Pickers.Provider;
 
 namespace MauiSlidePuzzle;
@@ -33,8 +34,23 @@ public partial class MainPage : ContentPage
 
 		BindingContext = this;
 
+		var helper = PuzzleResourceHelper.Instance;
+
+		if (helper.TryGetEmbededResourcePath("Stage1.json", out string path))
+		{
+		using (Stream stream = helper.GetEmbededResourceStream(path))
+		{
+			using var reader = new StreamReader(stream);
+			var contents = reader.ReadToEnd();
+				//StageInfoModel stageInfoModel = JsonSerializer.Deserialize<StageInfoModel>(contents);
+			StageInfo stageInfo = JsonSerializer.Deserialize<StageInfo>(contents);
+		}
+        
+		}
+
+
 		// Initialize stage info
-		_stageList.Add( new("Stage 1", "myshapes.png", 3, 3) );
+		_stageList.Add( new("Stage 1", "myshapes.png", 3, 3, 10) );
 		_stageList.Add( new("Stage 2", "sky_and_stars.png", 3, 3, 25) );
 		_stageList.Add( new("Stage 3", "amin.png", 4, 4, 25) );
 		_stageList.Add( new("Stage 4", "guruguru.png", 4, 4, 30) );

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -16,7 +17,8 @@ public partial class StageInfo : ObservableObject
     [ObservableProperty] string _embeddedImagePath;
     [ObservableProperty] int _shuffleCounts;
 
-    internal StageInfo(string stageName, string imageFilename, int rows, int columns, int counts = 10)
+    // The constructor is 'public' to be deserialized from json serializer
+    public StageInfo(string stageName, string imageFilename, int rows, int columns, int shuffleCounts)
     {
         if (rows < 1 || columns < 1) throw new ArgumentException("Puzzle rows/columns should be positive");
 
@@ -33,6 +35,6 @@ public partial class StageInfo : ObservableObject
 
         EmbeddedImagePath = embeddPath;
 
-        ShuffleCounts = counts;
+        ShuffleCounts = shuffleCounts;
     }
 }

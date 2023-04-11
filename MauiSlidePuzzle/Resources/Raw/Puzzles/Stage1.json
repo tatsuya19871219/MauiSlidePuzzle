@@ -1,0 +1,7 @@
+{
+    "StageName" : "Stage 1",
+    "ImageFilename" : "myshapes.png",
+    "Rows" : 3,
+    "Columns" : 3,
+    "ShuffleCounts" : 10
+}

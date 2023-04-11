@@ -49,10 +49,12 @@
 
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+		<EmbeddedResource Include="Resources\Raw\Puzzles\*" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <None Remove="resources\fonts\FontLicenseNotice" />
+	  <None Remove="resources\raw\puzzles\Stage1.json" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -62,6 +64,10 @@
 		<PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.3" />
 		<PackageReference Include="SkiaSharp.Views.Maui.Controls.Compatibility" Version="2.88.3" />
 		<PackageReference Include="SkiaSharp.Views.Maui.Core" Version="2.88.3" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Resources\Raw\Puzzles\" />
 	</ItemGroup>
 
 	<!-- <ItemGroup>
