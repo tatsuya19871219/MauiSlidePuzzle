@@ -2,11 +2,15 @@
 
 class SlidePuzzleView
 {
-    - puzzle : SlidePuzzle
-    - image : IImage
-    ~ PanelViews : List<IPanelView> <<read only>>
-    ~ SlidePuzzleView()
+    '- puzzle : SlidePuzzle
+    ~ PanelViews : List<SlidePanelView>
+    ~ BlankPanelView : BlankPanelView
+    - skImage : SKImage
+    ~ SlidePuzzleView(width : double, height : double)
+    ~ SetImageSource(embeddedImageSource : String) : void
+    ~ ClearImageSource() : void
     ~ Initialize(model : SlidePuzzle) : void
+    ~ ConvertLocToTrans(location : Point) : Point
     '~ ShuffleAsync(count : int) : Task
 }
 
@@ -14,11 +18,16 @@ abstract SlidePanelView
 {
     + ID : int
     + Translation : Point
+    ~ IsMoving : bool <<get only>>
+    # isMoving : bool
+    - imagePanel : ClipImagePanel
     - gv : GraphicsView <<read only>>
     # SlidePanelView(image : IImage, clipRect : RectF, id : int)
-    # AddTapRecognizer(tapped : Action<SlidePanelView>) : void
+    '# AddTapRecognizer(tapped : Action<SlidePanelView>) : void
     {abstract} ~ DrawPanelFrame(canvas : ICanvas, clipRect : RectF) : void
-    {abstract} ~ SetTappedNotifier(tapped : Action<SlidePanelView>) : void
+    '{abstract} ~ SetTappedNotifier(tapped : Action<SlidePanelView>) : void
+    {abstract} ~ MoveTo(point : Point, length : uint) : Task
+    ~ Shake(amplitude : double, length : uint) : Task
 }
 
 class ImagePanelView
@@ -34,11 +43,11 @@ class BlankPanelView
 
 }
 
-class PanelDrawable
+class PanelFrameDrawable
 {
-    - image : IImage <<read only>>
+    '- image : IImage <<read only>>
     - clipRect : RectF <<read only>>
-    + DrawPanelFrame : Action<ICanvas, RectF>
+    + DrawFrame : Action<ICanvas, RectF>
 }
 
 class SlidePuzzle
@@ -50,8 +59,12 @@ class SlidePuzzle
     ' - panels : List<ImagePanel>
     ' - blankPanel : ImagePanel
     ~ SlidePuzzle(rows : int, columns : int)
-    ~ TryMove(panel : SlidePanel) : bool
     ~ Shuffle(counts : int) : IEnumerable<SlidePanel>
+    - Shuffle() : IEnumerable<SlidePanel>
+    ~ Reset() : void
+    ~ TryMove(panel : SlidePanel) : bool
+    - GetNeighbors(panel : SlidePanel) : List<SlidePanel>
+    ~ IsCompleted() : bool
 }
 
 class SlidePanel
@@ -60,30 +73,49 @@ class SlidePanel
     + ID : int
     + Location : Point
     ~ SlidePanel(initialLocation : Point, id : int)
+    ~ SwapLocation(targetPanel : SlidePanel) : void
+    ~ IsInitialLocation() : bool
 }
 
 class SlidePuzzleController
 {
     - view : SlidePuzzleView <<read only>>
     - model : SlidePuzzle <<read only>>
-    - Initialize()
-    - ShuffleAsync(counts : int) : void
+    ~ SlidePuzzleController(view : SlidePuzzleView, model : SlidePuzzle)
+    ~ Initialize() : void
+    - EnablePanelTap() : void
+    - DisablePanelTap() : void
+    ~ ShuffleAsync(counts : int) : Task
+    ~ ResetAsync() : Task 
     - PanelTapped(panelView : SlidePanelView) : void
-    - ViewTapped() : void
+    '- ViewTapped() : void
+    '- SwapPanelTranslatinoAsync(imagePanelView : ImagePanelView, blankPanelView : BlankPanelView, length : uint) : Task
 }
 
 class MainPage
 {
+    + CurrentStageInfo : StageInfo
+    - stageList : List<StageInfo>
     - controller : SlidePuzzleController <<read only>>
     + MainPage()
-    '- InitializePuzzle() : void
+    - PrepareNewStage() : void
+}
+
+class StageInfo <<Observable Object>>
+{
+    StageName : string
+    ImageFilename : string
+    Rows : int
+    Columns : int
+    EmbeddedImagePath : string
+    ShuffleCounts : int
 }
 
 ' arrows
 ImagePanelView -up-|> SlidePanelView
 BlankPanelView -up-|> SlidePanelView
 
-SlidePanelView -right-> PanelDrawable
+SlidePanelView -right-> PanelFrameDrawable
 
 MainPage --> SlidePuzzleView
 MainPage ..> SlidePuzzle : <create> 
@@ -94,5 +126,7 @@ SlidePuzzleView *.down. "many" SlidePanelView
 
 SlidePuzzleController -left-> SlidePuzzleView
 SlidePuzzleController -right-> SlidePuzzle
+
+MainPage -right-> StageInfo
 
 @enduml
