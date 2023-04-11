@@ -30,9 +30,12 @@ public partial class MainPage : ContentPage
 
 	public MainPage()
 	{
+
 		InitializeComponent();
 
 		BindingContext = this;
+
+		GoToAppState("Initialized");
 
 		// Load stages
 		int k = 1;
@@ -46,10 +49,13 @@ public partial class MainPage : ContentPage
 		// _stageList.Add( new("Stage 5", "puzzle.png", 6, 6, 50) );
 
 		CurrentStageInfo = _stageList[_indexCurrentStage = 0];
+		PrevStageButton.IsEnabled = false;
 
 		PrepareNewStage();
 
 	}
+
+	void GoToAppState(string state) => VisualStateManager.GoToState(this, state);
 
 	bool TryLoadStageInfo(string filename, out StageInfo stageInfo)
 	{
@@ -73,46 +79,34 @@ public partial class MainPage : ContentPage
 	{
 		if (CurrentStageInfo is null) throw new Exception("Stage info is not set yet");
 
-		_cancellationTokenSource?.Cancel();
-		ResetButton.IsVisible = false;
+		GoToAppState("OnGamePreparing");
 
-		//MainThread.BeginInvokeOnMainThread(() =>
-		//{
-		//          CurrentStageImage.IsVisible = true;
-		//	CurrentStageImage.Source = ImageSource.FromResource(CurrentStageInfo.EmbeddedImagePath);
-		//});
+		FinalizeLastStage();
+		//_cancellationTokenSource?.Cancel();
 
-		CurrentStageImage.IsVisible = true;
+        // Prepare a puzzle according to the CurrentStageInfo
 		CurrentStageImage.Source = CurrentStageInfo.ImageFilename;
 
-		//var isMainThread = MainThread.IsMainThread;
-
-        MyPuzzleView.ClearImageSource();
+        //MyPuzzleView.ClearImageSource();
 		MyPuzzleView.SetImageSource(CurrentStageInfo.EmbeddedImagePath);
-		// set background color here
 
 		var puzzle = new SlidePuzzle(CurrentStageInfo.Rows, CurrentStageInfo.Columns);
 
+		// Prepare the puzzle controller for new puzzle
 		_controller = new SlidePuzzleController(MyPuzzleView, puzzle);
 
-		_controller.OnReady += () =>
-		{
-			StartButton.IsVisible = true;
-
-            //CurrentStageImage.IsVisible = true;
-            //CurrentStageImage.Source = ImageSource.FromResource(CurrentStageInfo.EmbeddedImagePath); 
-            // this throw the exception 
-            // "Only the original thread that created a view hierarchy can touch its views." in android
-        };
+		_controller.OnReady += () => GoToAppState("OnGameReady");
 
 		_controller.OnCompleted += () =>
 		{
-			CompletedMessage.IsVisible = true;
-			ResetButton.IsVisible = false;
+			GoToAppState("OnGameCompleted");
+			//CompletedMessage.IsVisible = true;
+			//ResetButton.IsVisible = false;
 
-			CurrentStageImage.IsVisible = true;
-
-			_cancellationTokenSource?.Cancel();
+			//CurrentStageImage.IsVisible = true;
+			
+			FinalizeLastStage();
+			//_cancellationTokenSource?.Cancel();
 
 			// Retart 
 			_controller.OnReady?.Invoke();
@@ -125,9 +119,11 @@ public partial class MainPage : ContentPage
 	// UI callbacks
 	async void StartClicked(object sender, EventArgs e)
 	{
-		CurrentStageImage.IsVisible = false;
-		CompletedMessage.IsVisible = false;
-		StartButton.IsVisible = false;
+		GoToAppState("OnGamePlay");
+		// CurrentStageImage.IsVisible = false;
+		// CompletedMessage.IsVisible = false;
+		// StartButton.IsVisible = false;
+
 		await _controller.ShuffleAsync(CurrentStageInfo.ShuffleCounts);
 
 		await ShowResetButtonAsync();
@@ -135,7 +131,8 @@ public partial class MainPage : ContentPage
 
 	async void ResetClicked(object sender, EventArgs e)
 	{
-		ResetButton.IsVisible = false;
+		GoToAppState("OnGameReset");
+		//ResetButton.IsVisible = false;
 
 		await _controller.ResetAsync();
 
@@ -145,10 +142,11 @@ public partial class MainPage : ContentPage
 	void PrevStageClicked(object sender, EventArgs e)
 	{
 		if (_indexCurrentStage == 0) return;
-
-        //MyPuzzleView.Clear();
+		else NextStageButton.IsEnabled = true;
 
         CurrentStageInfo = _stageList[--_indexCurrentStage];
+
+		if (_indexCurrentStage == 0) PrevStageButton.IsEnabled = false;
 
 		PrepareNewStage();
 	}
@@ -156,10 +154,11 @@ public partial class MainPage : ContentPage
 	void NextStageClicked(object sender, EventArgs e)
 	{
 		if (_indexCurrentStage == _stageList.Count-1) return;
-
-        //MyPuzzleView.Clear();
+		else PrevStageButton.IsEnabled = true;
 
         CurrentStageInfo = _stageList[++_indexCurrentStage];
+
+		if (_indexCurrentStage == _stageList.Count-1) NextStageButton.IsEnabled = false;
 
 		PrepareNewStage();
 	}
@@ -169,7 +168,7 @@ public partial class MainPage : ContentPage
 		PrepareNewStage();
 	}
 
-	// UI animations
+	// Reset button 
 	async Task ShowResetButtonAsync(int milliseconds = 5000)
 	{
 		_cancellationTokenSource = new CancellationTokenSource();
@@ -185,20 +184,26 @@ public partial class MainPage : ContentPage
 		}
 		finally
 		{
-			ResetCancellationToken();
-			// _cancellationTokenSource?.Dispose();
-			// _cancellationTokenSource = null;
+			//ResetCancellationToken();
+			_cancellationTokenSource?.Dispose();
+			_cancellationTokenSource = null;
 		}
 
+		//GoToAppState("OnGameReadyToReset");
 		ResetButton.IsVisible = true;
 	}
 
-	void ResetCancellationToken()
+	void FinalizeLastStage()
 	{
-		//_cancellationTokenSource?.Cancel();
-		_cancellationTokenSource?.Dispose();
-		_cancellationTokenSource = null;
-		ResetButton.IsVisible = false;
+		_cancellationTokenSource?.Cancel();
 	}
+
+	// void ResetCancellationToken()
+	// {
+	// 	//_cancellationTokenSource?.Cancel();
+	// 	_cancellationTokenSource?.Dispose();
+	// 	_cancellationTokenSource = null;
+	// 	ResetButton.IsVisible = false;
+	// }
 
 }

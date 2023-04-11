@@ -12,6 +12,74 @@
         </Style>
     </ContentPage.Resources>
 
+    <VisualStateManager.VisualStateGroups>
+        <VisualStateGroup Name="AppStates">
+            <VisualState Name="Initialized">
+                <VisualState.Setters>
+                    <Setter TargetName="StartButton" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="ResetButton" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="CompletedMessage" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="CurrentStageImage" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="ReloadStageButton" Property="IsEnabled" Value="False"/>
+                </VisualState.Setters>
+            </VisualState>
+            <VisualState Name="OnGamePreparing">
+                <VisualState.Setters>
+                    <Setter TargetName="StartButton" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="ResetButton" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="CompletedMessage" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="CurrentStageImage" Property="IsVisible" Value="True"/>
+                    <Setter TargetName="ReloadStageButton" Property="IsEnabled" Value="False"/>
+                </VisualState.Setters>
+            </VisualState>
+            <VisualState Name="OnGameReady">
+                <VisualState.Setters>
+                    <Setter TargetName="StartButton" Property="IsVisible" Value="True"/>
+                    <Setter TargetName="ResetButton" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="CompletedMessage" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="CurrentStageImage" Property="IsVisible" Value="True"/>
+                    <Setter TargetName="ReloadStageButton" Property="IsEnabled" Value="False"/>
+                </VisualState.Setters>
+            </VisualState>
+            <VisualState Name="OnGamePlay">
+                <VisualState.Setters>
+                    <Setter TargetName="StartButton" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="ResetButton" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="CompletedMessage" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="CurrentStageImage" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="ReloadStageButton" Property="IsEnabled" Value="True"/>
+                </VisualState.Setters>
+            </VisualState>
+            <!--<VisualState Name="OnGameReadyToReset">
+                <VisualState.Setters>
+                    <Setter TargetName="StartButton" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="ResetButton" Property="IsVisible" Value="True"/>
+                    <Setter TargetName="CompletedMessage" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="CurrentStageImage" Property="IsVisible" Value="False"/>
+                    --><!--<Setter TargetName="ReloadStageButton" Property="IsEnabled" Value="True"/>--><!--
+                </VisualState.Setters>
+            </VisualState>-->
+            <VisualState Name="OnGameReset">
+                <VisualState.Setters>
+                    <Setter TargetName="StartButton" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="ResetButton" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="CompletedMessage" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="CurrentStageImage" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="ReloadStageButton" Property="IsEnabled" Value="False"/>
+                </VisualState.Setters>
+            </VisualState>
+            <VisualState Name="OnGameCompleted">
+                <VisualState.Setters>
+                    <Setter TargetName="StartButton" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="ResetButton" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="CompletedMessage" Property="IsVisible" Value="True"/>
+                    <Setter TargetName="CurrentStageImage" Property="IsVisible" Value="True"/>
+                    <Setter TargetName="ReloadStageButton" Property="IsEnabled" Value="False"/>
+                </VisualState.Setters>
+            </VisualState>
+        </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
+
 
     <Shell.TitleView>
         <Grid x:Name="PuzzleTitleView" Margin="20, 0, 20, 0"
@@ -34,19 +102,19 @@
                     </Style>
                 </HorizontalStackLayout.Resources>
 
-                <ImageButton Clicked="PrevStageClicked">
+                <ImageButton x:Name="PrevStageButton" Clicked="PrevStageClicked">
                     <ImageButton.Source>
                         <FontImageSource Glyph="&#xf107;" FontFamily="Ionicons"/>
                     </ImageButton.Source>
                 </ImageButton>
 
-                <ImageButton Clicked="ReloadStageClicked">
+                <ImageButton x:Name="ReloadStageButton" Clicked="ReloadStageClicked">
                     <ImageButton.Source>
                         <FontImageSource Glyph="&#xf21c;" FontFamily="Ionicons"/>
                     </ImageButton.Source>
                 </ImageButton>
 
-                <ImageButton Clicked="NextStageClicked">
+                <ImageButton x:Name="NextStageButton" Clicked="NextStageClicked">
                     <ImageButton.Source>
                         <FontImageSource Glyph="&#xf10a;" FontFamily="Ionicons"/>
                     </ImageButton.Source>
@@ -62,9 +130,7 @@
                          Spacing="20">
 
         <Grid HeightRequest="80">
-            <Image x:Name="CompletedMessage"
-                    Source="completed.png"
-                    IsVisible="false"/>
+            <Image x:Name="CompletedMessage" Source="completed.png"/>
         </Grid>
 
         <Grid>
@@ -98,24 +164,18 @@
                 </RoundRectangle.Shadow>-->
             </RoundRectangle>
 
-            <Image x:Name="CurrentStageImage" BackgroundColor="{StaticResource AppBackgroundColor}" IsVisible="False"
+            <Image x:Name="CurrentStageImage" BackgroundColor="{StaticResource AppBackgroundColor}"
                    Style="{StaticResource PuzzleDecorationStyle}"/>
 
 
         </Grid>
 
         <Grid HeightRequest="80">
-            <ImageButton x:Name="StartButton"
-                        Source="start.png"
-                        Clicked="StartClicked"
-                        IsVisible="false"/>
+            <ImageButton x:Name="StartButton" Source="start.png" Clicked="StartClicked"/>
         </Grid>
 
         <Grid HeightRequest="80">
-            <ImageButton x:Name="ResetButton" 
-                        Source="reset.png" 
-                        Clicked="ResetClicked"
-                        IsVisible="false"/>
+            <ImageButton x:Name="ResetButton" Source="reset.png" Clicked="ResetClicked"/>
         </Grid>
 
     </VerticalStackLayout>

@@ -44,6 +44,10 @@ public class SlidePuzzleView : ContentView
 
     internal void SetImageSource(string embeddedImageSource)
 	{
+		// Clear
+		_skImage?.Dispose();
+		_skImage = null;
+
 		var helper = PuzzleResourceHelper.Instance;
 
 		using (Stream stream = helper.GetEmbededResourceStream(embeddedImageSource))
@@ -53,17 +57,16 @@ public class SlidePuzzleView : ContentView
 		}
     }
 
-    internal void ClearImageSource()
-	{
-		_skImage?.Dispose();
-		_skImage = null;
+    // void ClearImageSource()
+	// {
+	// 	_skImage?.Dispose();
+	// 	_skImage = null;
 
-		_panelViews.Clear(); // Need this!
-	}
+	// 	_panelViews.Clear(); // Need this!
+	// }
 
 	internal async void Initialize(SlidePuzzle model)
-	{
-		
+	{	
 		while (true)
 		{
 			if (_skImage is not null) break;
@@ -71,6 +74,7 @@ public class SlidePuzzleView : ContentView
 		}
 
 		_grid.Clear();
+		_panelViews.Clear();
 
 		int rows = model.Rows;
 		int columns = model.Columns;
