@@ -11,25 +11,21 @@ namespace MauiSlidePuzzle;
 public partial class MainPage : ContentPage
 {
 	public static readonly BindableProperty CurrentStageInfoProperty = BindableProperty.Create(nameof(CurrentStageInfo), typeof(StageInfo), typeof(MainPage), null);
-
 	public StageInfo CurrentStageInfo
 	{
 		get => (StageInfo)GetValue(CurrentStageInfoProperty);
 		set => SetValue(CurrentStageInfoProperty, value);
 	}
 
-
 	readonly List<StageInfo> _stageList = new();
 	int _indexCurrentStage;
 
 	SlidePuzzleController _controller;
 
-
 	CancellationTokenSource _cancellationTokenSource; // = new CancellationTokenSource();
 	CancellationToken _cancellationToken => _cancellationTokenSource.Token;
 
-
-	IList<VisualStateGroup> _vsgList;
+	//IList<VisualStateGroup> _vsgList;
 
 	public MainPage()
 	{
@@ -38,7 +34,7 @@ public partial class MainPage : ContentPage
 
 		BindingContext = this;
 
-		_vsgList = VisualStateManager.GetVisualStateGroups(this);
+		//_vsgList = VisualStateManager.GetVisualStateGroups(this);
 		//_vsgList = VisualStateManager.GetVisualStateGroups(CompletedMessage);
 
 		GoToAppState("Initialized");
@@ -65,7 +61,8 @@ public partial class MainPage : ContentPage
 
 	void GoToAppState(string state)
 	{
-		VisualStateManager.GoToState(this, state);
+		GoToElementState(this, state);
+		//VisualStateManager.GoToState(this, state);
 
 		//if (VisualStatesContains(CompletedMessage, state))
 		//	VisualStateManager.GoToState(CompletedMessage, state);
@@ -78,19 +75,9 @@ public partial class MainPage : ContentPage
 		//	VisualStateManager.GoToState(CurrentStageImage, "Default");
 	}
 
-	void GoToElementState(VisualElement element, string state)
-	{
-		VisualStateManager.GoToState(element, state);
-	}
+	void GoToElementState(VisualElement element, string state) 
+		=> VisualStateManager.GoToState(element, state);
 
-	//bool VisualStatesContains(VisualElement element, string state)
-	//{
-	//	var visualStateGroups = VisualStateManager.GetVisualStateGroups(element);
-
-	//	if (visualStateGroups.Count == 0) throw new Exception($"No visual state group is set for {element.StyleId}");
-
- //       return VisualStateManager.GetVisualStateGroups(element).FirstOrDefault().States.Any(s => s.Name.Equals(state));
-	//}
 
 	bool TryLoadStageInfo(string filename, out StageInfo stageInfo)
 	{
@@ -114,10 +101,11 @@ public partial class MainPage : ContentPage
 	{
 		if (CurrentStageInfo is null) throw new Exception("Stage info is not set yet");
 
+        _cancellationTokenSource?.Cancel();
+
 		GoToAppState("OnGamePreparing");
 		GoToElementState(CurrentStageImage, "OnGamePreparing");
 
-		FinalizeLastStage();
 
         // Prepare a puzzle according to the CurrentStageInfo
 		CurrentStageImage.Source = CurrentStageInfo.ImageFilename;
@@ -133,17 +121,17 @@ public partial class MainPage : ContentPage
 
 		_controller.OnCompleted += async () =>
 		{
-			GoToAppState("OnGameCompleted");
+            _cancellationTokenSource?.Cancel();
+
+			// GoToAppState("OnGameCompleted");
 			GoToElementState(CurrentStageImage, "OnGameCompleted");
 			GoToElementState(CompletedMessage, "OnGameCompleted");
 
 			await CompletedMessage.ScaleTo(1.2);
-			await CompletedMessage.ScaleTo(1.0);
+			await CompletedMessage.ScaleTo(1.0, 100);
 
-			FinalizeLastStage();
-			
-			// Restart 
-			_controller.OnReady?.Invoke();
+            // Restart 
+            _controller.OnReady?.Invoke();
 		};
 
 		_controller.Initialize();
@@ -182,6 +170,8 @@ public partial class MainPage : ContentPage
 
 		if (_indexCurrentStage == 0) PrevStageButton.IsEnabled = false;
 
+		GoToElementState(CompletedMessage, "Default");
+
 		PrepareNewStage();
 	}
 
@@ -193,6 +183,8 @@ public partial class MainPage : ContentPage
         CurrentStageInfo = _stageList[++_indexCurrentStage];
 
 		if (_indexCurrentStage == _stageList.Count-1) NextStageButton.IsEnabled = false;
+
+		GoToElementState(CompletedMessage, "Default");
 
 		PrepareNewStage();
 	}
@@ -225,9 +217,18 @@ public partial class MainPage : ContentPage
 		ResetButton.IsVisible = true;
 	}
 
-	void FinalizeLastStage()
-	{
-		_cancellationTokenSource?.Cancel();
-	}
+	//void FinalizeLastStage()
+	//{
+	//	_cancellationTokenSource?.Cancel();
+	//}
 
+ //   private void ResetButton_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+ //   {
+	//	var resetButton = sender as ImageButton;
+
+	//	//var a = nameof(resetButton.IsVisible);
+	//	if (!e.PropertyName.Equals(nameof(resetButton.IsVisible))) return;
+
+	//	if (resetButton.IsVisible == false) _cancellationTokenSource?.Cancel();
+ //   }
 }

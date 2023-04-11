@@ -132,6 +132,7 @@ MainPage -right-> StageInfo
 @enduml
 
 @startuml AppStates
+title AppStates
 hide empty description
 [*] -> Initialized
 Initialized -> OnGamePreparing
@@ -139,29 +140,28 @@ state OnGame {
     state OnGamePreparing {
     }
     OnGamePreparing --> OnGameReady
-    OnGameReady --> OnGamePlay : StartClicked
+    OnGameReady -> OnGamePlay : StartClicked
     OnGamePlay --> OnGameReset : ResetClicked
-    OnGamePlay -> OnGameCompleted
-    OnGameReset --> OnGamePlay
-    OnGameCompleted --> OnGameReady
+    OnGameReset --> OnGamePlay : await ResetAsync
+    OnGamePlay -> OnGameReady : OnCompleted
 }
 OnGame --> OnGamePreparing : PrevStageClicked / \nNextStageClicked / \nReloadStageClicked
 @enduml
 
 @startuml AppStates.CompletedMessage
+title AppStates.CompletedMessage
 hide empty description
 [*] -> Default
-Default --> OnGameCompleted
-OnGameCompleted --> Default
+Default --> OnGameCompleted : OnCompleted
+OnGameCompleted --> Default : StartClicked / \nPrevStageClicked / \nNextStageClicked
 @enduml
 
 @startuml AppStates.CurrentStageImage
+title AppStates.CurrentStageImage
 hide empty description
 [*] -> Default
-Default --> OnGameReady
-OnGameReady --> Default
-'OnGameReady --> OnGamePlay
-'OnGamePlay -> OnGameCompleted
-OnGameCompleted --> Default
-Default --> OnGameCompleted
+Default --> OnGameReady : PrepareNewStage
+OnGameReady --> Default : StartClicked
+Default --> OnGameCompleted : OnCompleted
+OnGameCompleted --> Default : StartClicked
 @enduml
