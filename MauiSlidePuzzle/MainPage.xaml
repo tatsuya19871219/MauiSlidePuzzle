@@ -88,8 +88,11 @@
 
             <RoundRectangle StrokeThickness="10" CornerRadius="2"
                     Stroke="Black" 
-                    Style="{StaticResource PuzzleDecorationStyle}" Scale="1.05"
+                    Style="{StaticResource PuzzleDecorationStyle}" 
+                    AnchorX="{OnPlatform 0.5, Android=0}" AnchorY="{OnPlatform 0.5, Android=0}"
+                    Scale="1.05"
                     InputTransparent="True">
+                <!-- Comment: I don't know why additional anchor settings are needed for Android -->
                 <!--<RoundRectangle.Shadow>
                     <Shadow Brush="Black" Offset="10, 10" Radius="20" Opacity="0.8"/>
                 </RoundRectangle.Shadow>-->
