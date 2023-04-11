@@ -16,7 +16,7 @@ abstract internal partial class SlidePanelView : ContentView
     readonly ClipImagePanel _imagePanel;
     readonly GraphicsView _gv;
 
-    public int ID {get; init;}
+    public int ID { get; init; }
 
     internal Action<SlidePanelView> Tapped;
 
@@ -24,7 +24,7 @@ abstract internal partial class SlidePanelView : ContentView
     {
         _gv = new GraphicsView();
 
-        var drawable = new PanelFrameDrawable(clipRect) {DrawFrame = DrawPanelFrame};
+        var drawable = new PanelFrameDrawable(clipRect) { DrawFrame = DrawPanelFrame };
         _gv.Drawable = drawable;
 
         _imagePanel = new ClipImagePanel() { Image = skImage, ClipRect = clipRect };
@@ -33,7 +33,7 @@ abstract internal partial class SlidePanelView : ContentView
 
         Content = new Grid
         {
-           Children = { _imagePanel, _gv }
+            Children = { _imagePanel, _gv }
         };
 
         this.WidthRequest = clipRect.Width;
@@ -51,7 +51,7 @@ abstract internal partial class SlidePanelView : ContentView
         _gv.GestureRecognizers.Add(tapRecognizer);
     }
 
-    
+
     abstract internal void DrawPanelFrame(ICanvas canvas, RectF clipRect);
 
     abstract internal Task MoveTo(Point point, uint length);
@@ -60,9 +60,9 @@ abstract internal partial class SlidePanelView : ContentView
     {
         _isMoving = true;
 
-        uint len = length/4;
+        uint len = length / 4;
         await this.RelRotateTo(amplitude, len);
-        await this.RelRotateTo(-2*amplitude, 2*len);
+        await this.RelRotateTo(-2 * amplitude, 2 * len);
         await this.RelRotateTo(amplitude, len);
 
         _isMoving = false;

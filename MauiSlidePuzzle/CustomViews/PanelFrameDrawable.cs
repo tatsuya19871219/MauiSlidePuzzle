@@ -11,7 +11,7 @@ internal class PanelFrameDrawable : IDrawable
     }
     public void Draw(ICanvas canvas, RectF dirtyRect)
     {
-        canvas.Translate((float) -_clipRect.Left, (float) -_clipRect.Top);
+        canvas.Translate((float)-_clipRect.Left, (float)-_clipRect.Top);
 
         DrawFrame?.Invoke(canvas, _clipRect);
     }

@@ -21,15 +21,15 @@ internal class SlidePuzzleController
     {
         // Initialize view
         _view.Initialize(_model);
-    
+
         if (_view.PanelViews is null) throw new Exception("PanelViews is null");
-        
+
         OnReady?.Invoke();
     }
 
     void EnablePanelTap()
     {
-        foreach (var panelView in _view.PanelViews) 
+        foreach (var panelView in _view.PanelViews)
             if (panelView != _view.BlankPanelView) panelView.Tapped += PanelTapped;
     }
 
@@ -54,7 +54,7 @@ internal class SlidePuzzleController
         }
 
         // If shuffling is failed to make random puzzle, try it again
-        if (_model.IsCompleted()) await ShuffleAsync(counts); 
+        if (_model.IsCompleted()) await ShuffleAsync(counts);
         else EnablePanelTap();
     }
 
@@ -68,9 +68,9 @@ internal class SlidePuzzleController
 
             SlidePanelView slidePanelView = _view.PanelViews[id];
 
-            Point translation =  _view.ConvertLocToTrans(panel.Location);
+            Point translation = _view.ConvertLocToTrans(panel.Location);
             uint dt = 10;
-            
+
             await slidePanelView.MoveTo(translation, dt);
         }
     }
@@ -83,7 +83,7 @@ internal class SlidePuzzleController
 
         SlidePanel panel = _model.Panels[id];
 
-        if ( _model.TryMove(panel) )
+        if (_model.TryMove(panel))
         {
             ImagePanelView imagePanelView = panelView as ImagePanelView;
             BlankPanelView blankPanelView = _view.BlankPanelView;
@@ -94,7 +94,7 @@ internal class SlidePuzzleController
         }
         else await panelView.Shake(20, 200);
 
-        if (_model.IsCompleted()) 
+        if (_model.IsCompleted())
         {
             DisablePanelTap();
             OnCompleted?.Invoke();

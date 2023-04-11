@@ -3,9 +3,9 @@
 internal class SlidePanel
 {
 
-    public int ID {get; init;}
-    public Point Location {get; set;}
-    
+    public int ID { get; init; }
+    public Point Location { get; set; }
+
     readonly Point _initialLocation;
 
 

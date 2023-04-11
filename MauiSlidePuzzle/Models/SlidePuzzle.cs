@@ -2,8 +2,8 @@
 
 internal class SlidePuzzle
 {
-    public int Rows {get; init;}
-    public int Columns {get; init;}
+    public int Rows { get; init; }
+    public int Columns { get; init; }
     public List<SlidePanel> Panels => _panels;
     public SlidePanel BlankPanel => _blank;
     readonly List<Point> _initialLocations = new();
@@ -23,12 +23,12 @@ internal class SlidePuzzle
         // Prepare locations
         for (int iy = 0; iy < rows; iy++)
             for (int ix = 0; ix < columns; ix++)
-                _initialLocations.Add( new Point(ix, iy) );
+                _initialLocations.Add(new Point(ix, iy));
 
         // Prepare panels for each location
         for (int k = 0; k < _initialLocations.Count; k++)
-            _panels.Add( new SlidePanel(_initialLocations[k], k));
-        
+            _panels.Add(new SlidePanel(_initialLocations[k], k));
+
         // Set the last panel as the blank
         _blank = _panels.Last();
     }
@@ -66,12 +66,12 @@ internal class SlidePuzzle
     }
 
     internal void Reset()
-    {   
+    {
         // Set initial location for each panel
-        foreach (var panel in _panels) 
+        foreach (var panel in _panels)
             panel.Location = _initialLocations[panel.ID];
 
-        foreach (var _ in Shuffle()) {}
+        foreach (var _ in Shuffle()) { }
     }
 
     internal bool TryMove(SlidePanel panel)
@@ -92,7 +92,7 @@ internal class SlidePuzzle
 
     List<SlidePanel> GetNeighbors(SlidePanel panel)
     {
-        return _panels.Where( p => p.Location.Distance(panel.Location) == 1 ).ToList();
+        return _panels.Where(p => p.Location.Distance(panel.Location) == 1).ToList();
     }
 
     internal bool IsCompleted()

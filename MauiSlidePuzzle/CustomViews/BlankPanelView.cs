@@ -6,11 +6,11 @@ internal class BlankPanelView : SlidePanelView
 {
     internal BlankPanelView(SKImage skImage, RectF clipRect, int id) : base(skImage, clipRect, id) { }
 
-	internal override void DrawPanelFrame(ICanvas canvas, RectF clipRect)
+    internal override void DrawPanelFrame(ICanvas canvas, RectF clipRect)
     {
         canvas.FillColor = this.BackgroundColor; //Colors.LightGray;
 
-		canvas.FillRectangle(clipRect);
+        canvas.FillRectangle(clipRect);
     }
 
     async internal override Task MoveTo(Point point, uint length)

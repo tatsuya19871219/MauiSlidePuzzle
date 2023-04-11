@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 
 namespace MauiSlidePuzzle;
 
@@ -36,7 +31,7 @@ class PuzzleResourceHelper
 
         if (exists) path = _puzzleResourceList.Where(file => file.Contains(name)).FirstOrDefault();
         else path = null;
-        
+
         return exists;
     }
 
