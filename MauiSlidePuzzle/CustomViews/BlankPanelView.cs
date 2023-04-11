@@ -22,7 +22,9 @@ internal class BlankPanelView : SlidePanelView
 
         this.Opacity = 0;
 
-        await this.FadeTo(1, length);
+        await this.FadeTo(0.25, length);
+
+        this.Opacity = 1;
 
         //this.IsVisible = true;
         _isMoving = false;
