@@ -130,3 +130,21 @@ SlidePuzzleController -right-> SlidePuzzle
 MainPage -right-> StageInfo
 
 @enduml
+
+@startuml AppStates
+hide empty description
+[*] -> Initialized
+Initialized -> OnGamePreparing
+state OnGame {
+    state OnGamePreparing {
+    }
+    OnGamePreparing --> OnGameReady
+    OnGameReady --> OnGamePlay : StartClicked
+    OnGamePlay --> OnGameReset : ResetClicked
+    OnGamePlay -> OnGameCompleted
+    OnGameReset --> OnGamePlay
+    OnGameCompleted --> OnGameReady
+}
+OnGame --> OnGamePreparing : PrevStageClicked / \nNextStageClicked / \nReloadStageClicked
+
+@enduml
