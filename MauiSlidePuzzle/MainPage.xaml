@@ -79,9 +79,9 @@
             <RoundRectangle StrokeThickness="10" CornerRadius="2"
                     Stroke="Black" 
                     Style="{StaticResource PuzzleDecorationStyle}" Scale="1.05">
-                <RoundRectangle.Shadow>
+                <!--<RoundRectangle.Shadow>
                     <Shadow Brush="Black" Offset="10, 10" Radius="20" Opacity="0.8"/>
-                </RoundRectangle.Shadow>
+                </RoundRectangle.Shadow>-->
             </RoundRectangle>
                 
             <custom:SlidePuzzleView x:Name="MyPuzzleView" IsVisible="True">
