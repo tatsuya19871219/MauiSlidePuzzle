@@ -148,7 +148,7 @@ state OnGame {
 OnGame --> OnGamePreparing : PrevStageClicked / \nNextStageClicked / \nReloadStageClicked
 @enduml
 
-@startuml AppStates.CompletedMessage
+@startuml AppStates_CompletedMessage
 title AppStates.CompletedMessage
 hide empty description
 [*] -> Default
@@ -156,7 +156,7 @@ Default --> OnGameCompleted : OnCompleted
 OnGameCompleted --> Default : StartClicked / \nPrevStageClicked / \nNextStageClicked
 @enduml
 
-@startuml AppStates.CurrentStageImage
+@startuml AppStates_CurrentStageImage
 title AppStates.CurrentStageImage
 hide empty description
 [*] -> Default
