@@ -3,7 +3,7 @@
 A sample game of sliding puzzles.
 
 <div>
-<video controls src="https://user-images.githubusercontent.com/7810461/231326950-ed50f28b-ab1f-4aae-bac3-a3bf69e7fa77.mp4"></video>
+<video controls src="https://user-images.githubusercontent.com/7810461/231326950-ed50f28b-ab1f-4aae-bac3-a3bf69e7fa77.mp4" height=300></video>
 </div>
 
 ## Files editted
@@ -99,7 +99,7 @@ Then, in a code, you can access the contents of a specified embedded resource vi
 
 ### Use SkiaSharp and SKCanvasView
 
-Using the view controls from SkiaSharp library, you should tell the maui app to use SkiaSharp in MauiProgram.cs:
+To use the view controls from SkiaSharp library, you should tell the maui app to use SkiaSharp in MauiProgram.cs:
 ```csharp
 var builder = MauiApp.CreateBuilder();
 builder
@@ -109,4 +109,19 @@ builder
 ```
 Without this statement, you will encounter the error with the unhundled exception such as,
 > Microsoft.Maui.Platform.HandlerNotFoundException: 'Handler not found for view SkiaSharp.Views.Maui.Controls.SKCanvasView.'
+
+### Add Fonts
+
+New fonts need to be added during the builder process:
+```csharp
+builder
+    ...
+    .ConfigureFonts(fonts =>
+    {
+    ...
+    fonts.AddFont("ionicons.ttf", "Ionicons");
+    });
+```
+Then, the name (_ex. Ionicons_) is available as the value of FontFamily attribute.
+
 
