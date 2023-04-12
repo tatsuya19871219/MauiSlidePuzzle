@@ -3,7 +3,9 @@
 A sample game of sliding puzzles.
 
 <div>
-<video controls src="https://user-images.githubusercontent.com/7810461/231326950-ed50f28b-ab1f-4aae-bac3-a3bf69e7fa77.mp4" height=300></video>
+<video controls autoplay height=400>
+ <source src="https://user-images.githubusercontent.com/7810461/231326950-ed50f28b-ab1f-4aae-bac3-a3bf69e7fa77.mp4" type="video/mp4">
+</video>
 </div>
 
 ## Files editted
@@ -123,5 +125,4 @@ builder
     });
 ```
 Then, the name (_ex. Ionicons_) is available as the value of FontFamily attribute.
-
 
