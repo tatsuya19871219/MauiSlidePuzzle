@@ -81,3 +81,32 @@ A sample game of sliding puzzles.
 - How to use non-default constructors in xaml
 - How to use VisualState
 - How to pass Json data to the constructor (Json constructor)
+
+### Include and access EmbeddedResources
+
+In the .csproj file, add EmbeddedRecource tags like
+``` xml
+<ItemGroup>
+...
+    <EmbeddedResource Include="Resources\Images\Puzzles\*" />
+...
+    <EmbeddedResource Include="Resources\Raw\Puzzles\*" />
+...
+</ItemGroup>
+``` 
+
+Then, in a code, you can access the contents of a specified embedded resource via a resource ID (_ex. MauiSlidePuzzle.Resources.Images.Puzzles.myshapes.png_).
+
+### Use SkiaSharp and SKCanvasView
+
+Using the view controls from SkiaSharp library, you should tell the maui app to use SkiaSharp in MauiProgram.cs:
+```csharp
+var builder = MauiApp.CreateBuilder();
+builder
+    .UseSkiaSharp(true)
+    .UseMauiApp<App>()
+    ...
+```
+Without this statement, you will encounter the error with the unhundled exception such as,
+> Microsoft.Maui.Platform.HandlerNotFoundException: 'Handler not found for view SkiaSharp.Views.Maui.Controls.SKCanvasView.'
+
