@@ -3,7 +3,7 @@
 A sample game of sliding puzzles.
 
 <div>
-<video controls src="./demo/Record_MauiSlidePuzzleDemoClip.mp4" height=400></video>
+<video controls src="https://user-images.githubusercontent.com/7810461/231326950-ed50f28b-ab1f-4aae-bac3-a3bf69e7fa77.mp4"></video>
 </div>
 
 ## Files editted
