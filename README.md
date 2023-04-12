@@ -2,6 +2,10 @@
 
 A sample game of sliding puzzles.
 
+<div>
+<video controls src="./demo/Record_MauiSlidePuzzleDemoClip.mp4" height=400></video>
+</div>
+
 ## Files editted
 
 <details>
